@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Kanban Produção com Modal (Vue 2)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="css/thalamus.css" rel="stylesheet">
+  <style>
+    body { background: var(--cor-bg); margin: 0; }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: var(--cor-bg);
+      padding: var(--margem);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 800px;
+      position: relative;
+      box-shadow: 0 2px 16px var(--cor-cinza);
+      animation: modalIn 0.2s;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--cor-fonte);
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .btn-abrir-modal {
+      padding: 12px var(--margem);
+      background: var(--cor-primaria);
+      color: var(--cor-bg);
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      margin: var(--margem) 0;
+      font-weight: 700;
+    }
+    .abas {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 5px;
+      margin-bottom: var(--margem);
+      position: relative;
+    }
+    .abas a {
+      border: 1px solid var(--cor-separador);
+      padding: 10px;
+      text-decoration: none;
+      border-radius: 12px;
+      display: inline-block;
+      color: var(--cor-fonte);
+      margin: 0;
+    }
+    .abas .ativo {
+      background-color: var(--cor-primaria-fraca);
+      color: var(--cor-primaria-forte);
+    }
+    .kanban-container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      position: relative;
+      display: block;
+    }
+    .kanban-board {
+      min-height: 27vw;
+      display: flex;
+      flex-direction: row;
+      gap: var(--margem);
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      align-items: flex-start;
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+    .colunaKanban {
+      border: 1px solid var(--cor-separador);
+      border-radius: 12px;
+      width: 300px;
+      min-height: 400px;
+      text-align: center;
+      padding: var(--margem);
+      background: var(--cor-bg);
+      flex-shrink: 0;
+      margin: 0;
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+    .colunaKanban:first-child {
+      margin-top: 25px;
+    }
+    .colunaKanban h3 {
+      margin-top: 0;
+      color: var(--cor-fonte-forte);
+    }
+    .container {
+      max-width: none;
+      width: 100%;
+      padding: var(--margem);
+      overflow-x: hidden;
+      position: relative;
+      display: block;
+    }
+    .margem.container {
+      padding: var(--margem);
+      margin: 0;
+      display: block;
+    }
+    .containerTarefa {
+      margin-top: var(--margem);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tarefa {
+      border: 1px solid var(--cor-separador);
+      border-radius: 12px;
+      padding: var(--margem);
+      margin: var(--margem) auto;
+      text-align: left;
+      box-sizing: border-box;
+      background: var(--cor-bg);
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    .tarefa:hover {
+      box-shadow: 0 2px 8px var(--cor-primaria-fraca);
+      background: var(--cor-primaria-fraca);
+    }
+    .rodapeTarefa {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: var(--margem);
+    }
+    @media (max-width: 1200px) {
+      .kanban-board { 
+        flex-wrap: nowrap;
+      }
+      .colunaKanban { 
+        width: 300px;
+      }
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    }
+
+    .grid-2, .grid-3 {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .margem {
+      margin: 1rem 0;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <main id="main">
+      <aside>
+        <div>
+          <div class="titulo margem efeito">
+            <div class="m-icone">
+              <a
+                href="#"
+                class="icone-menu"
+                title="Menu"
+                @click.prevent="toggleMenu"
+              ></a>
+            </div>
+          </div>
+          <nav class="nav-maior separador">
+            <div class="separador">
+              <a href="#/PCM/Controle">Fluxo de atendimento ao cliente</a>
+              <a href="#/PCM/Controle/Demandados">Indicadores</a>
+            </div>
+            <div class="separador">
+              <a href="#/Programas/controle">CRM</a>
+              <a href="#/projetos/0">Vendas</a>
+              <a href="#/protocolo/5" class="ativo">Produção</a>
+              <a href="#/PA/Controle">Expedição</a>
+            </div>
+          </nav>
+        </div>
+      </aside>
+      <section>
+        <div class="titulo">
+          <div class="margem container">
+            <div class="m-icone esquerda">
+              <a class="icone-voltar m-d" title="Voltar"></a>
+            </div>
+            <h2>Produção</h2>
+          </div>
+        </div>
+        <div class="margem container">
+
+          <div
+            v-if="modalAberta"
+            class="modal-overlay"
+            @click.self="modalAberta = false"
+          >
+            <div class="modal-content">
+              <button class="modal-close" @click="modalAberta = false">&times;</button>
+              <h2 style="color: #333; margin-bottom: 15px;">Modal Funcional</h2>
+              <p style="color: #666;">Tudo em um único arquivo HTML, agora como componente Vue!</p>
+            </div>
+          </div>
+          <div class="abas">
+            <a class="ativo">Ordens de produção </a>
+            <a>Kanban</a>
+          </div>
+          <!-- Kanban Board -->
+          <div class="kanban-container">
+            <div class="kanban-board">
+              <div
+                class="colunaKanban bloco"
+                style="border-color: rgb(255, 145, 0);"
+              >
+                <h3>OP OK</h3>
+                <div class="containerTarefa">
+                  <div
+                    v-for="(tarefa, idx) in kanban['OP OK']"
+                    :key="'ok-'+idx"
+                    class="tarefa bloco"
+                    @click="abrirModalTratarOP(tarefa)"
+                  >
+                    <span class="fonte-forte" style="font-size: 18px; display: block; word-wrap: break-word;">{{ tarefa.titulo }}</span>
+                    <div class="rodapeTarefa">
+                      <div style="flex: 1; min-width: 150px;">
+                        <span class="fonte-forte" style="display: block; word-wrap: break-word;">{{ tarefa.codigo }}</span>
+                      </div>
+                      <span style="flex: 1; min-width: 100px; text-align: left;">
+                        <span>{{ tarefa.cliente }}</span>
+                        <span>{{ tarefa.percentual }}</span>
+                      </span>
+                      <div style="flex: 1; min-width: 100px; text-align: left;">
+                        <span class="fonte-forte">Prev. Concl:</span> {{ tarefa.previsao }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="colunaKanban bloco"
+                style="border-color: rgb(0, 47, 255);"
+              >
+                <h3>OP Com pendência</h3>
+                <div class="containerTarefa">
+                  <div
+                    v-for="(tarefa, idx) in kanban['OP Com pendência']"
+                    :key="'pend-'+idx"
+                    class="tarefa bloco"
+                    @click="abrirModalTratarOP(tarefa)"
+                  >
+                    <span class="fonte-forte" style="font-size: 18px; display: block; word-wrap: break-word;">{{ tarefa.titulo }}</span>
+                    <div class="rodapeTarefa">
+                      <div style="flex: 1; min-width: 150px;">
+                        <span class="fonte-forte" style="display: block; word-wrap: break-word;">{{ tarefa.codigo }}</span>
+                      </div>
+                      <span style="flex: 1; min-width: 100px; text-align: left;">
+                        <span>{{ tarefa.cliente }}</span>
+                        <span>{{ tarefa.percentual }}</span>
+                      </span>
+                      <div style="flex: 1; min-width: 100px; text-align: left;">
+                        <span class="fonte-forte">Prev. Concl:</span> {{ tarefa.previsao }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="colunaKanban bloco"
+                style="border-color: rgb(0, 192, 0);"
+              >
+                <h3>OP em tratamento</h3>
+                <div class="containerTarefa"></div>
+              </div>
+              <div
+                class="colunaKanban bloco"
+                style="border-color: rgb(255, 165, 0);"
+              >
+                <h3>Separação de material</h3>
+                <div class="containerTarefa"></div>
+              </div>
+              <div
+                class="colunaKanban bloco"
+                style="border-color: rgb(255, 165, 0);"
+              >
+                <h3>Produção/Montagem</h3>
+                <div class="containerTarefa"></div>
+              </div>
+              <div
+                class="colunaKanban bloco"
+                style="border-color: rgb(255, 0, 0);"
+              >
+                <h3>Expedição</h3>
+                <div class="containerTarefa"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal para Tratar OP -->
+          <div
+            v-if="modalTratarOPAberta"
+            class="modal-overlay"
+            @click.self="modalTratarOPAberta = false"
+          >
+            <div class="modal-content bloco">
+              <button class="modal-close" @click="modalTratarOPAberta = false">&times;</button>
+              <div class="bloco">
+                <div class="margem grid-3">
+                  <div>
+                    <label>Produto</label>
+                    <input type="text" value="BRC040006 - Braço Autotravante Curto B">
+                  </div>
+                     <div>
+                    <label>Quantidade a Produzir</label>
+                    <input type="number" value="1650">
+                  </div>
+                  <div>
+                    <label>Previsão de Conclusão</label>
+                    <input type="date">
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                
+                </div>
+                <table class="tabela">
+                  <tbody>
+                    <tr>
+                      <th scope="col" style="white-space: nowrap;">Produto</th>
+                      <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                      <th scope="col" style="white-space: nowrap;">Estoque</th>
+                      <th scope="col" style="white-space: nowrap;">Comprar</th>
+                      <th scope="col" style="white-space: nowrap;">Produzir</th>
+                    </tr>
+                    <tr style="cursor: pointer;">
+                      <td>INJ010010 -  FRONTAL M7 T113 T116</td>
+                      <td><input type="text" size="7" value="500"></td>
+                      <td>400</td>
+                      <td>
+                      <button
+                        class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria"
+                        @click="abrirModalComprar"
+                      >
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>
+                        Comprar
+                      </button>
+                      </td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Produzir
+                      </button>
+                      </td>
+                    </tr>
+                    <tr style="cursor: pointer;">
+                      <td>FIX010033 - PAR PH AAT 2,9 X 6,5 PAN PRATA</td>
+                      <td><input type="text" size="7" value="2000"></td>
+                      <td>1500</td> 
+                      <td><button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Comprar
+                      </button></td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Produzir
+                      </button></td>
+                    </tr>
+                    <tr style="cursor: pointer;">
+                      <td>FIX010013 - ARRUELA 5/32 POL LISA PRATA	</td>
+                      <td><input type="text" size="7" value="2000"></td>
+                      <td>3000</td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Comprar
+                      </button></td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Produzir
+                      </button></td>
+                    </tr>
+                    <tr style="cursor: pointer;">
+                      <td>ADS010007 - BORRACHA FE 20X10 ST		</td>
+                      <td><input type="text" size="7" value="2000"></td>
+                      <td>7000</td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Comprar
+                      </button></td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Produzir
+                      </button></td>
+                    </tr>
+                    <tr style="cursor: pointer;">
+                      <td>PRE030003 - GABARITO DE COLAGEM CENTRAL MIKE	</td>
+                      <td><input type="text" size="7" value="500"></td>
+                      <td>100</td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Comprar
+                      </button></td>
+                      <td>
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                        <span class="v-btn__overlay"></span>
+                        <span class="v-btn__underlay"></span>
+                        <span class="v-btn__content" data-no-activator="">
+                          <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                        </span>Produzir
+                      </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="margem grid-3">
+               
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal Comprar Material -->
+          <div
+            v-if="modalComprarAberta"
+            class="modal-overlay"
+            id="modal_comprar"
+            @click.self="modalComprarAberta = false"
+          >
+            <div class="modal-content bloco">
+              <button class="modal-close" @click="modalComprarAberta = false">&times;</button>
+              <div class="bloco margem">
+                <h2>Solicitar Compra de Material</h2>
+                <form @submit.prevent="confirmarCompra">
+                  <div class="grid-3">
+                    <div class="form-group">
+                      <label>Produto</label>
+                      <input type="text" value="INJ010010 -  FRONTAL M7 T113 T116" v-model="produtoSelecionado" readonly class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Quantidade</label>
+                      <input type="number" v-model="quantidade" min="1" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <label>Previsão de Entrega</label>
+                      <input type="date" v-model="previsaoEntrega" class="form-control">
+                    </div>
+                  </div>
+                  <div class="grid-2">
+                    <div class="form-group">
+                      <label>Sugestão de Fornecedor</label>
+                      <select v-model="fornecedor" class="form-control">
+                        <option value="">Selecione um fornecedor</option>
+                        <option value="1">Fornecedor A</option>
+                        <option value="2">Fornecedor B</option>
+                      </select>
+                    </div>
+
+                  </div>
+                  <div class="form-group">
+                    <label>Observações</label>
+                    <textarea v-model="observacoes" class="form-control" rows="3"></textarea>
+                  </div>
+                  <div class="margem">
+                    <button type="submit" class="btn btn-primary">Confirmar Pedido de Compra</button>
+                    <button type="button" class="btn btn-secondary" @click="fecharModal">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="alinha-centro mt-5">
+            <a class="col-4 col-sm-4 col-md-3 btn btn-secondary" onclick="history.back()"><strong>Voltar</strong></a>
+            <button class="col-4 col-sm-4 col-md-3 btn ml-5" type="submit" form="po-form"><strong>Salvar</strong></button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        modalAberta: false,
+        modalTratarOPAberta: false,
+        modalComprarAberta: false,
+        tarefaSelecionada: null,
+        produtoSelecionado: 'INJ010010 - FRONTAL M7 T113 T116',
+        quantidade: 100,
+        previsaoEntrega: new Date().toISOString().split('T')[0],
+        fornecedor: '1',
+        observacoes: 'Compra padrão para produção',
+        kanban: {
+          'OP OK': [
+            {
+              titulo: 'OP4450 - PA',
+              codigo: '1500 - CST040003',
+              cliente: 'Solinftec',
+              percentual: '10%',
+              previsao: '10/04/2025'
+            },
+            {
+              titulo: 'OP4451 - PB',
+              codigo: '1501 - CST040004',
+              cliente: 'Solinftec',
+              percentual: '20%',
+              previsao: '12/04/2025'
+            }
+          ],
+          'OP Com pendência': [
+            {
+              titulo: 'OP4452 - PC',
+              codigo: '1502 - CST040005',
+              cliente: 'Solinftec',
+              percentual: '5%',
+              previsao: '15/04/2025'
+            },
+            {
+              titulo: 'OP4453 - PD',
+              codigo: '1503 - CST040006',
+              cliente: 'Solinftec',
+              percentual: '30%',
+              previsao: '18/04/2025'
+            }
+          ]
+        }
+      },
+      methods: {
+        toggleMenu() {
+          const main = document.getElementById('main');
+          if (main) main.classList.toggle('esconde');
+        },
+        abrirModalTratarOP(tarefa) {
+          this.tarefaSelecionada = tarefa;
+          this.modalTratarOPAberta = true;
+        },
+        abrirModalComprar() {
+          this.modalTratarOPAberta = false;
+          this.modalComprarAberta = true;
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('purchaseForm');
+      const productInput = document.getElementById('product');
+      const quantityInput = document.getElementById('quantity');
+      const unitPriceInput = document.getElementById('unitPrice');
+      const totalPriceInput = document.getElementById('totalPrice');
+
+      // Atualizar preço total quando quantidade ou preço unitário mudar
+      function updateTotalPrice() {
+        const quantity = parseFloat(quantityInput.value) || 0;
+        const unitPrice = parseFloat(unitPriceInput.value) || 0;
+        totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+      }
+
+      quantityInput.addEventListener('input', updateTotalPrice);
+      unitPriceInput.addEventListener('input', updateTotalPrice);
+
+      // Manipular envio do formulário
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+          product: productInput.value,
+          quantity: quantityInput.value,
+          deliveryForecast: document.getElementById('deliveryForecast').value,
+          supplier: document.getElementById('supplier').value,
+          unitPrice: unitPriceInput.value,
+          totalPrice: totalPriceInput.value,
+          observations: document.getElementById('observations').value
+        };
+
+        // Aqui você pode adicionar a lógica para enviar os dados
+        console.log('Dados do formulário:', formData);
+        alert('Compra registrada com sucesso!');
+        form.reset();
+      });
+
+      // Manipular cancelamento
+      document.getElementById('cancelBtn').addEventListener('click', function() {
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
