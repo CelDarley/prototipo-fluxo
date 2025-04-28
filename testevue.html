@@ -13,6 +13,8 @@
       background: rgba(0,0,0,0.5);
       display: flex; justify-content: center; align-items: center;
       z-index: 9999;
+      overflow-y: auto;
+      padding: 20px 0;
     }
     .modal-content {
       background: var(--cor-bg);
@@ -23,6 +25,12 @@
       position: relative;
       box-shadow: 0 2px 16px var(--cor-cinza);
       animation: modalIn 0.2s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-content.bloco {
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .modal-close {
       position: absolute;
@@ -137,11 +145,20 @@
       text-align: left;
       box-sizing: border-box;
       background: var(--cor-bg);
-      cursor: pointer;
-      transition: box-shadow 0.2s;
+      cursor: move;
+      transition: box-shadow 0.2s, transform 0.2s;
     }
     .tarefa:hover {
       box-shadow: 0 2px 8px var(--cor-primaria-fraca);
+      background: var(--cor-primaria-fraca);
+      transform: translateY(-2px);
+    }
+    .ghost {
+      opacity: 0.5;
+      background: var(--cor-primaria-fraca);
+    }
+    .sortable-ghost {
+      opacity: 0.5;
       background: var(--cor-primaria-fraca);
     }
     .rodapeTarefa {
@@ -239,9 +256,9 @@
               <a href="#/PCM/Controle/Demandados">Indicadores</a>
             </div>
             <div class="separador">
-              <a href="#/Programas/controle">CRM</a>
+              <a href="#/Programas/controle" @click="navegarParaCRM" :class="{ 'ativo': currentView === 'crm' }">CRM</a>
               <a href="#/projetos/0">Vendas</a>
-              <a href="#/protocolo/5" class="ativo">Produção</a>
+              <a href="#/protocolo/5" @click="navegarParaProducao" :class="{ 'ativo': currentView === 'producao' }">Produção</a>
               <a href="#/PA/Controle">Expedição</a>
             </div>
           </nav>
@@ -253,7 +270,7 @@
             <div class="m-icone esquerda">
               <a class="icone-voltar m-d" title="Voltar"></a>
             </div>
-            <h2>Produção</h2>
+            <h2>{{ currentView === 'crm' ? 'CRM' : 'Produção' }}</h2>
           </div>
         </div>
         <div class="margem container">
@@ -282,26 +299,34 @@
               >
                 <h3>OP OK</h3>
                 <div class="containerTarefa">
-                  <div
-                    v-for="(tarefa, idx) in kanban['OP OK']"
-                    :key="'ok-'+idx"
-                    class="tarefa bloco"
-                    @click="abrirModalTratarOP(tarefa)"
+                  <draggable
+                    v-model="kanban['OP OK']"
+                    group="tarefas"
+                    @end="onEnd"
+                    :animation="150"
+                    ghost-class="ghost"
                   >
-                    <span class="fonte-forte" style="font-size: 18px; display: block; word-wrap: break-word;">{{ tarefa.titulo }}</span>
-                    <div class="rodapeTarefa">
-                      <div style="flex: 1; min-width: 150px;">
-                        <span class="fonte-forte" style="display: block; word-wrap: break-word;">{{ tarefa.codigo }}</span>
-                      </div>
-                      <span style="flex: 1; min-width: 100px; text-align: left;">
-                        <span>{{ tarefa.cliente }}</span>
-                        <span>{{ tarefa.percentual }}</span>
-                      </span>
-                      <div style="flex: 1; min-width: 100px; text-align: left;">
-                        <span class="fonte-forte">Prev. Concl:</span> {{ tarefa.previsao }}
+                    <div
+                      v-for="(tarefa, idx) in kanban['OP OK']"
+                      :key="'ok-'+idx"
+                      class="tarefa bloco"
+                      @click="abrirModalTratarOP(tarefa)"
+                    >
+                      <span class="fonte-forte" style="font-size: 18px; display: block; word-wrap: break-word;">{{ tarefa.titulo }}</span>
+                      <div class="rodapeTarefa">
+                        <div style="flex: 1; min-width: 150px;">
+                          <span class="fonte-forte" style="display: block; word-wrap: break-word;">{{ tarefa.codigo }}</span>
+                        </div>
+                        <span style="flex: 1; min-width: 100px; text-align: left;">
+                          <span>{{ tarefa.cliente }}</span>
+                          <span>{{ tarefa.percentual }}</span>
+                        </span>
+                        <div style="flex: 1; min-width: 100px; text-align: left;">
+                          <span class="fonte-forte">Prev. Concl:</span> {{ tarefa.previsao }}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </draggable>
                 </div>
               </div>
               <div
@@ -310,26 +335,34 @@
               >
                 <h3>OP Com pendência</h3>
                 <div class="containerTarefa">
-                  <div
-                    v-for="(tarefa, idx) in kanban['OP Com pendência']"
-                    :key="'pend-'+idx"
-                    class="tarefa bloco"
-                    @click="abrirModalTratarOP(tarefa)"
+                  <draggable
+                    v-model="kanban['OP Com pendência']"
+                    group="tarefas"
+                    @end="onEnd"
+                    :animation="150"
+                    ghost-class="ghost"
                   >
-                    <span class="fonte-forte" style="font-size: 18px; display: block; word-wrap: break-word;">{{ tarefa.titulo }}</span>
-                    <div class="rodapeTarefa">
-                      <div style="flex: 1; min-width: 150px;">
-                        <span class="fonte-forte" style="display: block; word-wrap: break-word;">{{ tarefa.codigo }}</span>
-                      </div>
-                      <span style="flex: 1; min-width: 100px; text-align: left;">
-                        <span>{{ tarefa.cliente }}</span>
-                        <span>{{ tarefa.percentual }}</span>
-                      </span>
-                      <div style="flex: 1; min-width: 100px; text-align: left;">
-                        <span class="fonte-forte">Prev. Concl:</span> {{ tarefa.previsao }}
+                    <div
+                      v-for="(tarefa, idx) in kanban['OP Com pendência']"
+                      :key="'pend-'+idx"
+                      class="tarefa bloco"
+                      @click="abrirModalTratarOP(tarefa)"
+                    >
+                      <span class="fonte-forte" style="font-size: 18px; display: block; word-wrap: break-word;">{{ tarefa.titulo }}</span>
+                      <div class="rodapeTarefa">
+                        <div style="flex: 1; min-width: 150px;">
+                          <span class="fonte-forte" style="display: block; word-wrap: break-word;">{{ tarefa.codigo }}</span>
+                        </div>
+                        <span style="flex: 1; min-width: 100px; text-align: left;">
+                          <span>{{ tarefa.cliente }}</span>
+                          <span>{{ tarefa.percentual }}</span>
+                        </span>
+                        <div style="flex: 1; min-width: 100px; text-align: left;">
+                          <span class="fonte-forte">Prev. Concl:</span> {{ tarefa.previsao }}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </draggable>
                 </div>
               </div>
               <div
@@ -415,7 +448,7 @@
                       </button>
                       </td>
                       <td>
-                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalProducao">
                         <span class="v-btn__overlay"></span>
                         <span class="v-btn__underlay"></span>
                         <span class="v-btn__content" data-no-activator="">
@@ -436,7 +469,7 @@
                         </span>Comprar
                       </button></td>
                       <td>
-                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalProducao">
                         <span class="v-btn__overlay"></span>
                         <span class="v-btn__underlay"></span>
                         <span class="v-btn__content" data-no-activator="">
@@ -457,7 +490,7 @@
                         </span>Comprar
                       </button></td>
                       <td>
-                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalProducao">
                         <span class="v-btn__overlay"></span>
                         <span class="v-btn__underlay"></span>
                         <span class="v-btn__content" data-no-activator="">
@@ -478,7 +511,7 @@
                         </span>Comprar
                       </button></td>
                       <td>
-                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalProducao">
                         <span class="v-btn__overlay"></span>
                         <span class="v-btn__underlay"></span>
                         <span class="v-btn__content" data-no-activator="">
@@ -499,7 +532,7 @@
                         </span>Comprar
                       </button></td>
                       <td>
-                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                      <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalProducao">
                         <span class="v-btn__overlay"></span>
                         <span class="v-btn__underlay"></span>
                         <span class="v-btn__content" data-no-activator="">
@@ -565,6 +598,153 @@
               </div>
             </div>
           </div>
+          <!-- Modal de Produção -->
+          <div
+            v-if="modalProducaoAberta"
+            class="modal-overlay"
+            @click.self="modalProducaoAberta = false"
+          >
+            <div class="modal-content bloco" style="width: 90%; max-width: 1200px;">
+              <button class="modal-close" @click="modalProducaoAberta = false">&times;</button>
+              <div class="bloco margem">
+                <h2>Criar Ordem de Produção</h2>
+                <div class="bloco">
+                  <div class="margem grid-3">
+                    <div>
+                      <label>Produto</label>
+                      <input type="text" v-model="produtoSelecionado" readonly>
+                    </div>
+                    <div>
+                      <label>Previsão de Conclusão</label>
+                      <input type="date" v-model="previsaoConclusao">
+                    </div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                      <span class="v-btn__overlay"></span>
+                      <span class="v-btn__underlay"></span>
+                      <span class="v-btn__content" data-no-activator="">
+                        <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                      </span>+
+                    </button>
+                  </div>
+                  <table class="tabela">
+                    <tbody>
+                      <tr>
+                        <th scope="col" style="white-space: nowrap;">Destino</th>
+                        <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                        <th scope="col" style="white-space: nowrap;">Anexo</th>
+                      </tr>
+                      <tr v-for="(destino, index) in destinos" :key="index" style="cursor: pointer;">
+                        <td>{{ destino.nome }}</td>
+                        <td><input type="text" size="7" v-model="destino.quantidade"></td>
+                        <td>{{ destino.anexo }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="margem grid-3">
+                    <div>
+                      <label>Quantidade a Produzir</label>
+                      <input type="number" v-model="quantidadeProduzir">
+                    </div>
+                  </div>
+                </div>
+                <div class="bloco margem">
+                  <h3>Itens do Produto</h3>
+                  <br>
+                  <table class="tabela">
+                    <tbody>
+                      <tr>
+                        <th scope="col" style="white-space: nowrap;">Item</th>
+                        <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                      </tr>
+                      <tr v-for="(item, index) in itensProduto" :key="index" style="cursor: pointer;">
+                        <td>{{ item.nome }}</td>
+                        <td><input type="text" size="7" v-model="item.quantidade"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="bloco margem">
+                  <h3>Informações Adicionais</h3>
+                  <br>
+                  <div class="grid-2">
+                    <div>
+                      <label>Data de Início da Produção</label>
+                      <input type="date" v-model="dataInicioProducao">
+                    </div>
+                    <div>
+                      <label>Data de Conclusão da Produção</label>
+                      <input type="date" v-model="dataConclusaoProducao">
+                    </div>
+                  </div>
+                </div>
+                <div class="bloco margem">
+                  <h3>Observações</h3>
+                  <br>
+                  <div>
+                    <textarea v-model="observacoesProducao"></textarea>
+                  </div>
+                </div>
+                <div class="submit direita margem">
+                  <button @click="salvarOrdemProducao" class="btn btn-primary">Salvar</button>
+                  <button @click="modalProducaoAberta = false" class="btn btn-secondary">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Conteúdo do CRM -->
+          <div v-if="currentView === 'crm'" class="margem container">
+            <div class="abas">
+              <a class="ativo" style="border: 1px solid #ccc; background-color: #f0f0f0; padding: 10px; text-decoration: none; border-radius: 5px; margin-right: 5px; display: inline-block;">
+                Oportunidades
+              </a>
+              <a class="" style="border: 1px solid #ccc; background-color: #fff; padding: 10px; text-decoration: none; border-radius: 5px; margin-right: 5px; display: inline-block;">
+                Kanban
+              </a>
+            </div>
+            <div class="bloco margem">
+              <div class="alinha-direita">
+                <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                  <span class="v-btn__overlay"></span>
+                  <span class="v-btn__underlay"></span>
+                  <span class="v-btn__content" data-no-activator="">
+                    <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <table class="tabela">
+                <tbody>
+                  <tr>
+                    <th>Nº Oportunidade</th>
+                    <th>CNPJ</th>
+                    <th>Cliente</th>
+                    <th>Criação oportunidade</th>
+                    <th>Fase</th>
+                    <th>Conclusão oportunidade</th>
+                    <th>Proposta Comercial</th>
+                    <th>Aprovação Proposta Comercial</th>
+                    <th>Previsão Entrega Cliente</th>
+                    <th>NF</th>
+                    <th>Emissão NF</th>
+                  </tr>
+                  <tr v-for="(oportunidade, index) in oportunidades" :key="index">
+                    <td>{{ oportunidade.numero }}</td>
+                    <td>{{ oportunidade.cnpj }}</td>
+                    <td :title="oportunidade.cliente">{{ oportunidade.cliente }}</td>
+                    <td>{{ oportunidade.criacao }}</td>
+                    <td>{{ oportunidade.fase }}</td>
+                    <td>{{ oportunidade.conclusao }}</td>
+                    <td>{{ oportunidade.proposta }}</td>
+                    <td>{{ oportunidade.aprovacao }}</td>
+                    <td>{{ oportunidade.previsaoEntrega }}</td>
+                    <td>{{ oportunidade.nf }}</td>
+                    <td>{{ oportunidade.emissaoNf }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <br>
           <div class="alinha-centro mt-5">
             <a class="col-4 col-sm-4 col-md-3 btn btn-secondary" onclick="history.back()"><strong>Voltar</strong></a>
@@ -575,6 +755,7 @@
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuedraggable@2.24.3/dist/vuedraggable.umd.min.js"></script>
   <script>
     new Vue({
       el: '#app',
@@ -582,12 +763,55 @@
         modalAberta: false,
         modalTratarOPAberta: false,
         modalComprarAberta: false,
+        modalProducaoAberta: false,
         tarefaSelecionada: null,
         produtoSelecionado: 'INJ010010 - FRONTAL M7 T113 T116',
         quantidade: 100,
         previsaoEntrega: new Date().toISOString().split('T')[0],
         fornecedor: '1',
         observacoes: 'Compra padrão para produção',
+        previsaoConclusao: new Date().toISOString().split('T')[0],
+        quantidadeProduzir: 1650,
+        currentView: 'producao',
+        oportunidades: [
+          {
+            numero: 'OPT250457',
+            cnpj: '03.923.437/0002-76',
+            cliente: 'INDUSTRIA E COMERCIO DE ARTEFATOS PLASTICOS VELAPLAST LTDA',
+            criacao: '14/03/2025',
+            fase: 'Conquistado',
+            conclusao: '10/04/2025',
+            proposta: '453400',
+            aprovacao: '08/04/2025',
+            previsaoEntrega: '08/05/2025',
+            nf: '00003456',
+            emissaoNf: '12/05/2025'
+          },
+          {
+            numero: 'OPT250456',
+            cnpj: '24.021.677/0012-27',
+            cliente: 'COOPERATIVA DOS PRODUTORES RURAIS DO PRATA LTDA',
+            criacao: '14/03/2025',
+            fase: 'Conquistado',
+            conclusao: '10/04/2025',
+            proposta: '453400',
+            aprovacao: '08/04/2025',
+            previsaoEntrega: '08/05/2025',
+            nf: '00003456',
+            emissaoNf: '12/05/2025'
+          }
+        ],
+        destinos: [
+          { nome: 'COFERMETA SA', quantidade: 150, anexo: '000545' },
+          { nome: 'USINA ALTO VERDE', quantidade: 500, anexo: '000545' },
+          { nome: 'ESTOQUE', quantidade: 1000, anexo: '000545' }
+        ],
+        itensProduto: [
+          { nome: '	PMP010006 - CHAPA POLIESTIRENO PRETO COM FILME 1000 X 2000 X 3MM', quantidade: 150 }
+        ],
+        dataInicioProducao: new Date().toISOString().split('T')[0],
+        dataConclusaoProducao: new Date().toISOString().split('T')[0],
+        observacoesProducao: '',
         kanban: {
           'OP OK': [
             {
@@ -635,6 +859,34 @@
         abrirModalComprar() {
           this.modalTratarOPAberta = false;
           this.modalComprarAberta = true;
+        },
+        abrirModalProducao() {
+          this.modalTratarOPAberta = false;
+          this.modalProducaoAberta = true;
+        },
+        navegarParaCRM() {
+          this.currentView = 'crm';
+        },
+        navegarParaProducao() {
+          this.currentView = 'producao';
+        },
+        salvarOrdemProducao() {
+          const ordemProducaoData = {
+            produto: this.produtoSelecionado,
+            previsaoConclusao: this.previsaoConclusao,
+            quantidadeProduzir: this.quantidadeProduzir,
+            destinos: this.destinos,
+            itensProduto: this.itensProduto,
+            dataInicioProducao: this.dataInicioProducao,
+            dataConclusaoProducao: this.dataConclusaoProducao,
+            observacoes: this.observacoesProducao
+          };
+          console.log('Dados da ordem de produção:', ordemProducaoData);
+          alert('Ordem de produção criada com sucesso!');
+          this.modalProducaoAberta = false;
+        },
+        onEnd(evt) {
+          console.log('Card movido:', evt);
         }
       }
     });
@@ -646,7 +898,6 @@
       const unitPriceInput = document.getElementById('unitPrice');
       const totalPriceInput = document.getElementById('totalPrice');
 
-      // Atualizar preço total quando quantidade ou preço unitário mudar
       function updateTotalPrice() {
         const quantity = parseFloat(quantityInput.value) || 0;
         const unitPrice = parseFloat(unitPriceInput.value) || 0;
@@ -656,7 +907,6 @@
       quantityInput.addEventListener('input', updateTotalPrice);
       unitPriceInput.addEventListener('input', updateTotalPrice);
 
-      // Manipular envio do formulário
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -670,16 +920,31 @@
           observations: document.getElementById('observations').value
         };
 
-        // Aqui você pode adicionar a lógica para enviar os dados
         console.log('Dados do formulário:', formData);
         alert('Compra registrada com sucesso!');
         form.reset();
       });
 
-      // Manipular cancelamento
       document.getElementById('cancelBtn').addEventListener('click', function() {
         form.reset();
       });
+
+      document.querySelector('.acao-secundaria').addEventListener('click', function() {
+        $('#modalProducao').modal('show');
+      });
+
+      window.salvarProducao = function() {
+        const producaoData = {
+          produto: document.querySelector('[v-model="produtoSelecionado"]').value,
+          quantidade: document.querySelector('[v-model="quantidadeProduzida"]').value,
+          data: document.querySelector('[v-model="dataProducao"]').value,
+          observacoes: document.querySelector('[v-model="observacoesProducao"]').value
+        };
+
+        console.log('Dados da produção:', producaoData);
+        alert('Produção registrada com sucesso!');
+        $('#modalProducao').modal('hide');
+      };
     });
   </script>
 </body>
