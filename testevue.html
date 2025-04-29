@@ -673,7 +673,7 @@
                   <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">NF</th>
                   <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Data Emissão</th>
                 </tr>
-                <tr style="cursor: pointer;">
+                <tr style="cursor: pointer;" @click="selecionarProposta('PC 50050')">
                   <td>PC 50050</td>
                   <td>OPT0987</td>
                   <td>Solinfitec</td>
@@ -730,6 +730,140 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </section>
+      <section v-else-if="currentView === 'detalhesProposta'">
+        <div class="titulo">
+          <div class="margem container">
+            <div class="m-icone esquerda">
+              <a class="icone-voltar m-d" title="Voltar" @click="voltarParaVendas"></a>
+            </div>
+            <h2>Detalhes da Proposta Comercial</h2>
+          </div>
+        </div>
+        <div data-v-63b48b03="" class="bloco" style="width: 1700px; margin: 80px;">
+          <div id="123" onclick="document.getElementById('modalProdutos').style.display='block'" style="cursor: pointer;"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+
+          </div></div>
+          <fieldset data-v-63b48b03="" class="margem grid-2">
+            <span><h3>Nº da proposta comercial: PC50050</h3>
+              
+            </span>
+          </fieldset>
+          <fieldset data-v-63b48b03="" class="margem grid-6" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
+            <div data-v-63b48b03="" style="flex: 1; min-width: 200px;">
+              <h4>Proposta comercial</h4> <span>PC2504551</span>
+            </div>
+            <div data-v-63b48b03="" style="flex: 1; min-width: 200px;">
+              <h4>Data de criação</h4> <span>09/04/2025</span>
+            </div>
+            <div data-v-63b48b03="" style="flex: 1; min-width: 200px;">
+              <h4>CNPJ</h4> <span>48.254.566/0001-55</span>
+            </div>
+            <div data-v-63b48b03="" style="flex: 1; min-width: 200px;">
+              <h4>Razão Social</h4> <span>Solinfitec</span>
+            </div>
+            <div data-v-63b48b03="" style="flex: 1; min-width: 200px;">
+              <h4>Aprovação Cliente</h4> <span>09/04/2025</span>
+            </div>
+            <div data-v-63b48b03="" style="flex: 1; min-width: 200px;">
+              <h4>Previsão de entrega</h4> <span><input data-v-63b48b03="" type="date"></span>
+            </div>
+          </fieldset>
+
+          <div id="123" onclick="document.getElementById('modalProdutos').style.display='block'" style="cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <br>
+              <div data-v-487991f2="" class="tags">
+                <a id="maisProdutos" data-v-487991f2="" class="ativo">+</a>
+              </div>
+            </div>
+          </div>
+          <br>
+
+          <table class="tabela" style="margin: 30px;">
+            <tbody>
+              <tr>
+                <th scope="col" style="white-space: nowrap;">Cod. Produto</th>
+                <th scope="col" style="white-space: nowrap;">Descrição</th>
+                <th scope="col" style="white-space: nowrap;">Previsão de entrega</th>
+                <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                <th style="text-align: center;">Estoque</th>
+                <th style="text-align: center;">Observação do produto</th>
+                <th style="text-align: center;">Link Anexo</th>
+                <th style="text-align: center; background-color: rgba(0, 0, 255, 0.03); border: 1px solid rgba(0, 0, 255, 0.05);">Reservado expedição</th>
+                <th style="text-align: center; background-color: rgba(0, 0, 255, 0.03); border: 1px solid rgba(0, 0, 255, 0.05);">Quant. a Produzir</th>
+                <th scope="col" style="white-space: nowrap; background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);">Nr de Op</th>
+                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);">Previsão de conclusão</th>
+                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);">Previsão de conclusão</th>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>CST040003</td>
+                <td>Case X115 magnética</td>
+                <td>10/04/2025</td>
+                <td>1000</td>
+                <td>500</td>
+                <td>nova cor</td>
+                <td>www.uyhgt.com</td>
+                <td style="background-color: rgba(0, 0, 255, 0.03); border: 1px solid rgba(0, 0, 255, 0.05);"><input type="text" value="500"></td>
+                <td style="background-color: rgba(0, 0, 255, 0.03); border: 1px solid rgba(0, 0, 255, 0.05);"><input type="text" value="500"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);">000150</td>
+                <td style="background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);">10/04/2025</td>
+                <td style="background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);">10/04/2025</td>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>PLUG040002</td>
+                <td scope="col">Plug Magnético C</td>
+                <td>10/04/2025</td>
+                <td>1500</td>
+                <td>1000</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="background-color: rgba(0, 0, 255, 0.03); border: 1px solid rgba(0, 0, 255, 0.05);"><input type="text" value="1000"></td>
+                <td style="background-color: rgba(0, 0, 255, 0.03); border: 1px solid rgba(0, 0, 255, 0.05);"><input type="text" value="500"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.03); border: 1px solid rgba(255, 0, 0, 0.05);"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <fieldset>
+            <br>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <br>
+              <div data-v-487991f2="" class="tags">
+                <a id="maisProdutos" data-v-487991f2="" class="ativo">+</a>
+              </div>
+            </div>
+            <br>
+            <div data-v-63b48b03="" style="display: grid; grid-template-columns: 30% 70%;">
+              <div data-v-63b48b03="">
+                <label data-v-63b48b03="">Data da Atualização</label>
+                <input type="date">
+              </div>
+              <div data-v-63b48b03="" style="margin-left:40px">
+                <label data-v-63b48b03="">Observação</label>
+                <textarea data-v-63b48b03=""></textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <div data-v-399ff5f7="" class="bloco margem">
+            <div data-v-399ff5f7="" class="alinha-v">
+              <button data-v-399ff5f7="" type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" id="124" aria-haspopup="menu" aria-expanded="false" aria-controls="v-menu-7" style="transform: scale(0.7);" onclick="document.getElementById('modalPropostaComercial').style.display='block'">
+                <span class="v-btn__overlay"></span>
+                <span class="v-btn__underlay"></span>
+                <span class="v-btn__content" data-no-activator="">
+                  <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                </span>
+              </button>
+              <input data-v-399ff5f7="" type="file" style="display: none;">
+              <div data-v-399ff5f7="" style="display: flex; padding-left: 0.2rem; border-radius: 5px; width: 100%; align-content: center; gap: 5px;">
+                <input data-v-399ff5f7="" type="text" placeholder="O que será feito?" class="input-comentario" style="height: 3rem; margin: 0px 0px 0px 5px;">
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1023,7 +1157,6 @@
           <div
             v-if="modalComprarAberta"
             class="modal-overlay"
-            id="modal_comprar"
             @click.self="modalComprarAberta = false"
           >
             <div class="modal-content bloco">
@@ -1034,11 +1167,11 @@
                   <div class="grid-3">
                     <div class="form-group">
                       <label>Produto</label>
-                      <input type="text" value="INJ010010 -  FRONTAL M7 T113 T116" v-model="produtoSelecionado" readonly class="form-control">
+                      <input type="text" v-model="produtoSelecionado" readonly="readonly" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>Quantidade</label>
-                      <input type="number" v-model="quantidade" min="1" class="form-control">
+                      <input type="number" v-model="quantidadeCompra" min="1" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>Previsão de Entrega</label>
@@ -1048,21 +1181,20 @@
                   <div class="grid-2">
                     <div class="form-group">
                       <label>Sugestão de Fornecedor</label>
-                      <select v-model="fornecedor" class="form-control">
+                      <select v-model="fornecedorSelecionado" class="form-control">
                         <option value="">Selecione um fornecedor</option>
                         <option value="1">Fornecedor A</option>
                         <option value="2">Fornecedor B</option>
                       </select>
                     </div>
-
                   </div>
                   <div class="form-group">
                     <label>Observações</label>
-                    <textarea v-model="observacoes" class="form-control" rows="3"></textarea>
+                    <textarea v-model="observacoesCompra" rows="3" class="form-control"></textarea>
                   </div>
                   <div class="margem">
                     <button type="submit" class="btn btn-primary">Confirmar Pedido de Compra</button>
-                    <button type="button" class="btn btn-secondary" @click="fecharModal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" @click="modalComprarAberta = false">Cancelar</button>
                   </div>
                 </form>
               </div>
@@ -1085,80 +1217,93 @@
                       <input type="text" v-model="produtoSelecionado" readonly>
                     </div>
                     <div>
+                      <label>Quantidade Total</label>
+                      <input type="number" v-model="quantidadeTotal" min="1">
+                    </div>
+                    <div>
                       <label>Previsão de Conclusão</label>
                       <input type="date" v-model="previsaoConclusao">
                     </div>
                   </div>
-                  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
-                      <span class="v-btn__overlay"></span>
-                      <span class="v-btn__underlay"></span>
-                      <span class="v-btn__content" data-no-activator="">
-                        <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
-                      </span>+
-                    </button>
+                  
+                  <div class="margem">
+                    <h3>Destinos da Produção</h3>
+                    <table class="tabela">
+                      <thead>
+                        <tr>
+                          <th>Destino</th>
+                          <th>Quantidade</th>
+                          <th>Número OP</th>
+                          <th>Previsão Entrega</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(destino, index) in destinos" :key="index">
+                          <td>
+                            <select v-model="destino.nome" class="form-control">
+                              <option value="COFERMETA SA">COFERMETA SA</option>
+                              <option value="USINA ALTO VERDE">USINA ALTO VERDE</option>
+                              <option value="ESTOQUE">ESTOQUE</option>
+                            </select>
+                          </td>
+                          <td><input type="number" v-model="destino.quantidade" min="1" class="form-control"></td>
+                          <td><input type="text" v-model="destino.op" class="form-control"></td>
+                          <td><input type="date" v-model="destino.previsaoEntrega" class="form-control"></td>
+                          <td>
+                            <button @click="removerDestino(index)" class="btn btn-danger">Remover</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <button @click="adicionarDestino" class="btn btn-primary mt-2">Adicionar Destino</button>
                   </div>
-                  <table class="tabela">
-                    <tbody>
-                      <tr>
-                        <th scope="col" style="white-space: nowrap;">Destino</th>
-                        <th scope="col" style="white-space: nowrap;">Quantidade</th>
-                        <th scope="col" style="white-space: nowrap;">Anexo</th>
-                      </tr>
-                      <tr v-for="(destino, index) in destinos" :key="index" style="cursor: pointer;">
-                        <td>{{ destino.nome }}</td>
-                        <td><input type="text" size="7" v-model="destino.quantidade"></td>
-                        <td>{{ destino.anexo }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="margem grid-3">
-                    <div>
-                      <label>Quantidade a Produzir</label>
-                      <input type="number" v-model="quantidadeProduzir">
-                    </div>
+
+                  <div class="margem">
+                    <h3>Materiais Necessários</h3>
+                    <table class="tabela">
+                      <thead>
+                        <tr>
+                          <th>Material</th>
+                          <th>Quantidade Necessária</th>
+                          <th>Estoque Disponível</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(material, index) in materiais" :key="index">
+                          <td>{{ material.nome }}</td>
+                          <td>{{ material.quantidadeNecessaria }}</td>
+                          <td>{{ material.estoque }}</td>
+                          <td>
+                            <span :class="{'text-success': material.estoque >= material.quantidadeNecessaria, 'text-danger': material.estoque < material.quantidadeNecessaria}">
+                              {{ material.estoque >= material.quantidadeNecessaria ? 'Disponível' : 'Insuficiente' }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                </div>
-                <div class="bloco margem">
-                  <h3>Itens do Produto</h3>
-                  <br>
-                  <table class="tabela">
-                    <tbody>
-                      <tr>
-                        <th scope="col" style="white-space: nowrap;">Item</th>
-                        <th scope="col" style="white-space: nowrap;">Quantidade</th>
-                      </tr>
-                      <tr v-for="(item, index) in itensProduto" :key="index" style="cursor: pointer;">
-                        <td>{{ item.nome }}</td>
-                        <td><input type="text" size="7" v-model="item.quantidade"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="bloco margem">
-                  <h3>Informações Adicionais</h3>
-                  <br>
-                  <div class="grid-2">
-                    <div>
-                      <label>Data de Início da Produção</label>
-                      <input type="date" v-model="dataInicioProducao">
-                    </div>
-                    <div>
-                      <label>Data de Conclusão da Produção</label>
-                      <input type="date" v-model="dataConclusaoProducao">
-                    </div>
+
+                  <div class="margem">
+                    <h3>Observações</h3>
+                    <textarea v-model="observacoesProducao" rows="4" class="form-control" placeholder="Adicione observações importantes sobre a produção..."></textarea>
                   </div>
-                </div>
-                <div class="bloco margem">
-                  <h3>Observações</h3>
-                  <br>
-                  <div>
-                    <textarea v-model="observacoesProducao"></textarea>
+
+                  <div class="margem">
+                    <h3>Prioridade</h3>
+                    <select v-model="prioridade" class="form-control">
+                      <option value="baixa">Baixa</option>
+                      <option value="media">Média</option>
+                      <option value="alta">Alta</option>
+                      <option value="urgente">Urgente</option>
+                    </select>
                   </div>
-                </div>
-                <div class="submit direita margem">
-                  <button @click="salvarOrdemProducao" class="btn btn-primary">Salvar</button>
-                  <button @click="modalProducaoAberta = false" class="btn btn-secondary">Cancelar</button>
+
+                  <div class="submit direita margem">
+                    <button @click="salvarOrdemProducao" class="btn btn-primary">Salvar Ordem de Produção</button>
+                    <button @click="modalProducaoAberta = false" class="btn btn-secondary">Cancelar</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1184,53 +1329,32 @@
         modalProducaoAberta: false,
         modalNovaOportunidadeAberta: false,
         tarefaSelecionada: null,
-        produtoSelecionado: 'INJ010010 - FRONTAL M7 T113 T116',
-        quantidade: 100,
-        previsaoEntrega: new Date().toISOString().split('T')[0],
-        fornecedor: '1',
-        observacoes: 'Compra padrão para produção',
-        previsaoConclusao: new Date().toISOString().split('T')[0],
-        quantidadeProduzir: 1650,
-        currentView: 'producao',
-        oportunidades: [
+        produtoSelecionado: '',
+        quantidadeTotal: 0,
+        previsaoConclusao: '',
+        destinos: [],
+        materiais: [
           {
-            numero: 'OPT250457',
-            cnpj: '03.923.437/0002-76',
-            cliente: 'INDUSTRIA E COMERCIO DE ARTEFATOS PLASTICOS VELAPLAST LTDA',
-            criacao: '14/03/2025',
-            fase: 'Conquistado',
-            conclusao: '10/04/2025',
-            proposta: '453400',
-            aprovacao: '08/04/2025',
-            previsaoEntrega: '08/05/2025',
-            nf: '00003456',
-            emissaoNf: '12/05/2025'
+            nome: 'Material A',
+            quantidadeNecessaria: 10,
+            estoque: 15,
+            status: 'ok'
           },
           {
-            numero: 'OPT250456',
-            cnpj: '24.021.677/0012-27',
-            cliente: 'COOPERATIVA DOS PRODUTORES RURAIS DO PRATA LTDA',
-            criacao: '14/03/2025',
-            fase: 'Conquistado',
-            conclusao: '10/04/2025',
-            proposta: '453400',
-            aprovacao: '08/04/2025',
-            previsaoEntrega: '08/05/2025',
-            nf: '00003456',
-            emissaoNf: '12/05/2025'
+            nome: 'Material B',
+            quantidadeNecessaria: 5,
+            estoque: 3,
+            status: 'insuficiente'
           }
         ],
-        destinos: [
-          { nome: 'COFERMETA SA', quantidade: 150, anexo: '000545' },
-          { nome: 'USINA ALTO VERDE', quantidade: 500, anexo: '000545' },
-          { nome: 'ESTOQUE', quantidade: 1000, anexo: '000545' }
-        ],
-        itensProduto: [
-          { nome: '	PMP010006 - CHAPA POLIESTIRENO PRETO COM FILME 1000 X 2000 X 3MM', quantidade: 150 }
-        ],
-        dataInicioProducao: new Date().toISOString().split('T')[0],
-        dataConclusaoProducao: new Date().toISOString().split('T')[0],
         observacoesProducao: '',
+        prioridade: 'media',
+        opcoesDestino: ['OP 123', 'OP 456', 'OP 789'],
+        opcoesPrioridade: [
+          { valor: 'baixa', texto: 'Baixa' },
+          { valor: 'media', texto: 'Média' },
+          { valor: 'alta', texto: 'Alta' }
+        ],
         kanban: {
           'OP OK': [
             {
@@ -1274,7 +1398,13 @@
         problemaApresentado: '',
         solucoes: [],
         orcamentos: [],
-        tarefas: []
+        tarefas: [],
+        currentView: 'producao',
+        propostaSelecionada: null,
+        quantidadeCompra: 1,
+        previsaoEntrega: '',
+        fornecedorSelecionado: '',
+        observacoesCompra: ''
       },
       methods: {
         toggleMenu() {
@@ -1291,28 +1421,85 @@
         abrirModalComprar() {
           this.modalTratarOPAberta = false;
           this.modalComprarAberta = true;
+          // Inicializar dados do produto selecionado
+          this.produtoSelecionado = this.tarefaSelecionada ? this.tarefaSelecionada.produto : '';
+          this.quantidadeCompra = 1;
+          this.previsaoEntrega = new Date().toISOString().split('T')[0];
+          this.fornecedorSelecionado = '';
+          this.observacoesCompra = '';
         },
         abrirModalProducao() {
           this.modalTratarOPAberta = false;
           this.modalProducaoAberta = true;
+          // Inicializar dados da produção
+          this.quantidadeTotal = this.tarefaSelecionada ? this.tarefaSelecionada.quantidade : 0;
+          this.previsaoConclusao = new Date().toISOString().split('T')[0];
+          this.destinos = [];
+          this.observacoesProducao = '';
+          this.prioridade = 'media';
         },
         showCRM() {
           this.currentView = 'crm';
         },
         salvarOrdemProducao() {
+          // Validar dados antes de salvar
+          if (!this.validarOrdemProducao()) {
+            return;
+          }
+
           const ordemProducaoData = {
             produto: this.produtoSelecionado,
+            quantidadeTotal: this.quantidadeTotal,
             previsaoConclusao: this.previsaoConclusao,
-            quantidadeProduzir: this.quantidadeProduzir,
             destinos: this.destinos,
-            itensProduto: this.itensProduto,
-            dataInicioProducao: this.dataInicioProducao,
-            dataConclusaoProducao: this.dataConclusaoProducao,
-            observacoes: this.observacoesProducao
+            materiais: this.materiais,
+            observacoes: this.observacoesProducao,
+            prioridade: this.prioridade
           };
+
           console.log('Dados da ordem de produção:', ordemProducaoData);
           alert('Ordem de produção criada com sucesso!');
           this.modalProducaoAberta = false;
+        },
+        validarOrdemProducao() {
+          // Validar quantidade total
+          if (this.quantidadeTotal <= 0) {
+            alert('A quantidade total deve ser maior que zero');
+            return false;
+          }
+
+          // Validar destinos
+          if (this.destinos.length === 0) {
+            alert('Adicione pelo menos um destino para a produção');
+            return false;
+          }
+
+          // Validar se a soma das quantidades dos destinos é igual à quantidade total
+          const somaQuantidades = this.destinos.reduce((total, destino) => total + parseInt(destino.quantidade || 0), 0);
+          if (somaQuantidades !== this.quantidadeTotal) {
+            alert('A soma das quantidades dos destinos deve ser igual à quantidade total');
+            return false;
+          }
+
+          // Validar materiais
+          const materiaisInsuficientes = this.materiais.filter(m => m.estoque < m.quantidadeNecessaria);
+          if (materiaisInsuficientes.length > 0) {
+            alert('Existem materiais com estoque insuficiente');
+            return false;
+          }
+
+          return true;
+        },
+        adicionarDestino() {
+          this.destinos.push({
+            nome: '',
+            quantidade: 0,
+            op: '',
+            previsaoEntrega: new Date().toISOString().split('T')[0]
+          });
+        },
+        removerDestino(index) {
+          this.destinos.splice(index, 1);
         },
         onEnd(evt) {
           console.log('Card movido:', evt);
@@ -1370,6 +1557,54 @@
             tarefas: this.tarefas
           });
           this.fecharModalNovaOportunidade();
+        },
+        selecionarProposta(proposta) {
+          this.propostaSelecionada = proposta;
+          this.currentView = 'detalhesProposta';
+        },
+        voltarParaVendas() {
+          this.currentView = 'vendas';
+        },
+        confirmarCompra() {
+          // Validar dados antes de confirmar
+          if (!this.validarCompra()) {
+            return;
+          }
+
+          const pedidoCompra = {
+            produto: this.produtoSelecionado,
+            quantidade: this.quantidadeCompra,
+            previsaoEntrega: this.previsaoEntrega,
+            fornecedor: this.fornecedorSelecionado,
+            observacoes: this.observacoesCompra
+          };
+
+          console.log('Dados do pedido de compra:', pedidoCompra);
+          alert('Pedido de compra registrado com sucesso!');
+          this.modalComprarAberta = false;
+        },
+        validarCompra() {
+          if (!this.produtoSelecionado) {
+            alert('Selecione um produto');
+            return false;
+          }
+
+          if (this.quantidadeCompra <= 0) {
+            alert('A quantidade deve ser maior que zero');
+            return false;
+          }
+
+          if (!this.previsaoEntrega) {
+            alert('Informe a previsão de entrega');
+            return false;
+          }
+
+          if (!this.fornecedorSelecionado) {
+            alert('Selecione um fornecedor');
+            return false;
+          }
+
+          return true;
         }
       }
     });
