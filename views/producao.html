@@ -229,7 +229,7 @@
             </a>
           </div><br>
           <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-            <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalAdicionarEstoque">
+            <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="adicionarProdutoEstoque">
               <span class="v-btn__overlay"></span>
               <span class="v-btn__underlay"></span>
               <span class="v-btn__content" data-no-activator="">
@@ -266,7 +266,7 @@
                 <td>1000</td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style=""><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
                 <td>PLG040002</td>
@@ -278,7 +278,7 @@
                 <td>1500</td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style=""><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
                 <td>BRC040003</td>
@@ -290,7 +290,7 @@
                 <td>750</td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style=""><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
                 <td>CST040231</td>
@@ -302,7 +302,7 @@
                 <td>2540</td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style=""><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
                 <td>CST040003</td>
@@ -314,7 +314,19 @@
                 <td>0</td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
                 <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style=""><input type="checkbox"></td>
+                <td><input type="checkbox"></td>
+              </tr>
+              <tr v-for="(produto, index) in produtosEstoque" :key="index" style="cursor: pointer;">
+                <td><input type="text" v-model="produto.codigo"></td>
+                <td><input type="text" v-model="produto.descricao"></td>
+                <td>ESTOQUE</td>
+                <td><input type="text" v-model="produto.cliente"></td>
+                <td><input type="date" v-model="produto.prevEntrega"></td>
+                <td><input type="number" v-model="produto.quantico"></td>
+                <td>1000</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="number" v-model="produto.reservarExpedicao"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="number" v-model="produto.quantProduzir"></td>
+                <td><input type="checkbox" v-model="produto.acao"></td>
               </tr>
             </tbody>
           </table>
@@ -392,9 +404,9 @@
               <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Proposta Comercial</font></font></font></font></font></font></span></th>
               <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cliente</font></font></font></font></font></font></span></th>
               <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Prev. Entrega Cliente</font></font></font></font></font></font></th>
-              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Quantidade</font></font></font></font></font></font></th>
-              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Estoque</font></font></font></font></font></font></th>
-              <th style="text-align: center; "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Quant. Produzir</font></font></font></font></font></font></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Quantidade</font></font></font></font></font></font></font></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Estoque</font></font></font></font></font></font></font></th>
+              <th style="text-align: center; "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Quant. Produzir</font></font></font></font></font></font></font></th>
               <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Prev. de Conclusão</font></font></font></font></font></font></th>
               <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Data Conclusão</font></font></font></font></font></font></th>
             </tr>
@@ -403,7 +415,7 @@
               <td rowspan="2" style="text-align: center;">OP4450</td>
               <td rowspan="2" style="text-align: center;">Prod. Acabado</td><td rowspan="2" style="text-align: center;">CST040003</td>
               <td rowspan="2" style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Caso X115 Magnética</font></font></font></font></td>
-              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">000451</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">000451</font></font></font></font></td>
               <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cofermeta Sa</font></font></font></font></td>
               <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">09/04/2025</font></font></font></font></td>
               <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2500</font></font></font></font></td>
@@ -848,104 +860,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal Adicionar Produto Estoque -->
-    <div v-if="showModalAdicionarEstoque" class="modal-overlay" @click.self="fecharModalAdicionarEstoque">
-      <div class="modal-content">
-        <button class="modal-close" @click="fecharModalAdicionarEstoque">&times;</button>
-        <div class="bloco margem">
-          <h2>Criar Ordem de Produção</h2>
-          <div class="bloco">
-            <div class="margem grid-3">
-              <div>
-                <label>Produto</label>
-                <input type="text" v-model="novoProdutoEstoque.produto" readonly="readonly">
-              </div>
-              <div>
-                <label>Previsão de Conclusão</label>
-                <input type="date" v-model="novoProdutoEstoque.previsaoConclusao">
-              </div>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-              <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="adicionarDestinoEstoque">
-                <span class="v-btn__overlay"></span>
-                <span class="v-btn__underlay"></span>
-                <span data-no-activator="" class="v-btn__content">
-                  <i aria-hidden="true" class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default"></i>
-                </span>
-              </button>
-            </div>
-            <table class="tabela">
-              <tbody>
-                <tr>
-                  <th scope="col" style="white-space: nowrap;">Destino</th>
-                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
-                  <th scope="col" style="white-space: nowrap;">Anexo</th>
-                </tr>
-                <tr v-for="(destino, index) in destinosEstoque" :key="index" style="cursor: pointer;">
-                  <td>
-                    <select v-model="destino.nome" class="form-control">
-                      <option value="COFERMETA SA">COFERMETA SA</option>
-                      <option value="USINA ALTO VERDE">USINA ALTO VERDE</option>
-                      <option value="ESTOQUE">ESTOQUE</option>
-                    </select>
-                  </td>
-                  <td><input type="text" size="7" v-model="destino.quantidade"></td>
-                  <td><input type="text" v-model="destino.anexo"></td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="margem grid-3">
-              <div>
-                <label>Quantidade a Produzir</label>
-                <input type="number" v-model="novoProdutoEstoque.quantidadeProducao">
-              </div>
-            </div>
-          </div>
-          <div class="bloco margem">
-            <h3>Itens do Produto</h3>
-            <br>
-            <table class="tabela">
-              <tbody>
-                <tr>
-                  <th scope="col" style="white-space: nowrap;">Item</th>
-                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
-                </tr>
-                <tr v-for="(item, index) in itensProdutoEstoque" :key="index" style="cursor: pointer;">
-                  <td>{{ item.nome }}</td>
-                  <td><input type="text" size="7" v-model="item.quantidade"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="bloco margem">
-            <h3>Informações Adicionais</h3>
-            <br>
-            <div class="grid-2">
-              <div>
-                <label>Data de Início da Produção</label>
-                <input type="date" v-model="novoProdutoEstoque.dataInicio">
-              </div>
-              <div>
-                <label>Data de Conclusão da Produção</label>
-                <input type="date" v-model="novoProdutoEstoque.dataConclusao">
-              </div>
-            </div>
-          </div>
-          <div class="bloco margem">
-            <h3>Observações</h3>
-            <br>
-            <div>
-              <textarea v-model="novoProdutoEstoque.observacoes"></textarea>
-            </div>
-          </div>
-          <div class="submit direita margem">
-            <button class="btn btn-primary" @click="salvarProdutoEstoque">Salvar</button>
-            <button class="btn btn-secondary" @click="fecharModalAdicionarEstoque">Cancelar</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -957,7 +871,6 @@
         showModalComprar: false,
         showModalProducao: false,
         showModalNovaOP: false,
-        showModalAdicionarEstoque: false,
         materialSelecionado: {
           nome: '',
           quantidade: 0,
@@ -1065,25 +978,7 @@
           dataConclusao: '',
           observacoes: ''
         },
-        novoProdutoEstoque: {
-          produto: '',
-          previsaoConclusao: '',
-          quantidadeProducao: 0,
-          dataInicio: '',
-          dataConclusao: '',
-          observacoes: ''
-        },
-        destinosEstoque: [
-          { nome: 'COFERMETA SA', quantidade: '', anexo: '000545' },
-          { nome: 'USINA ALTO VERDE', quantidade: '', anexo: '000545' },
-          { nome: 'ESTOQUE', quantidade: '', anexo: '000545' }
-        ],
-        itensProdutoEstoque: [
-          {
-            nome: 'PMP010006 - CHAPA POLIESTIRENO PRETO COM FILME 1000 X 2000 X 3MM',
-            quantidade: 0
-          }
-        ]
+        produtosEstoque: []
       },
       methods: {
         mudarAba(aba) {
@@ -1343,40 +1238,18 @@
 
           return true;
         },
-        abrirModalAdicionarEstoque() {
-          this.showModalAdicionarEstoque = true;
-          this.novoProdutoEstoque = {
-            produto: '',
-            previsaoConclusao: new Date().toISOString().split('T')[0],
-            quantidadeProducao: 0,
-            dataInicio: new Date().toISOString().split('T')[0],
-            dataConclusao: new Date().toISOString().split('T')[0],
-            observacoes: ''
+        adicionarProdutoEstoque() {
+          const novoProduto = {
+            codigo: '',
+            descricao: '',
+            cliente: '',
+            prevEntrega: '',
+            quantico: '',
+            reservarExpedicao: '',
+            quantProduzir: '',
+            acao: false
           };
-          this.destinosEstoque = [
-            { nome: 'COFERMETA SA', quantidade: '', anexo: '000545' },
-            { nome: 'USINA ALTO VERDE', quantidade: '', anexo: '000545' },
-            { nome: 'ESTOQUE', quantidade: '', anexo: '000545' }
-          ];
-        },
-        fecharModalAdicionarEstoque() {
-          this.showModalAdicionarEstoque = false;
-          this.novoProdutoEstoque = {
-            produto: '',
-            previsaoConclusao: '',
-            quantidadeProducao: 0,
-            dataInicio: '',
-            dataConclusao: '',
-            observacoes: ''
-          };
-          this.destinosEstoque = [];
-        },
-        adicionarDestinoEstoque() {
-          this.destinosEstoque.push({
-            nome: '',
-            quantidade: '',
-            anexo: '000545'
-          });
+          this.produtosEstoque.unshift(novoProduto);
         },
         salvarProdutoEstoque() {
           if (!this.validarProdutoEstoque()) {
