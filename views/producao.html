@@ -124,8 +124,14 @@
       box-shadow: 0 2px 16px var(--cor-cinza);
       animation: modalIn 0.2s;
       margin: 20px auto;
-      max-height: none;
-      overflow-y: visible;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-content .container {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0;
+      margin: 0;
     }
     .modal-close {
       position: absolute;
@@ -205,12 +211,265 @@
           <h2>Produção</h2>
         </div>
       </div>
-      <div class="margem container">
+      <div class="margem container"><br>
         <div class="abas">
-          <a class="ativo">Ordens de produção</a>
-          <a>Kanban</a>
+          <a :class="{ 'ativo': abaAtiva === 'gestao' }" @click="mudarAba('gestao')">Gestão de Produtos Acabados</a>
+          <a :class="{ 'ativo': abaAtiva === 'ordens' }" @click="mudarAba('ordens')">Ordens de produção</a>
+          <a :class="{ 'ativo': abaAtiva === 'kanban' }" @click="mudarAba('kanban')">Kanban</a>
         </div>
-        <div class="kanban-container">
+
+        <div v-if="abaAtiva === 'gestao'" class="bloco margem" style="width: 140%; max-width: 1400px; margin: 0 auto;">
+          <div style="text-align: center;">
+            <a>
+              <h3>
+                <button class="acao-secundaria" style="margin: 0 auto; display: block;">
+                  Produtos Acabados oriundo de Propostas Comerciais para programação de produção ou reserva de estoque
+                </button>
+              </h3>
+            </a>
+          </div><br>
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalAdicionarEstoque">
+              <span class="v-btn__overlay"></span>
+              <span class="v-btn__underlay"></span>
+              <span class="v-btn__content" data-no-activator="">
+                <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                <span>Adicionar produto - estoque</span>
+              </span>
+            </button>
+            <select style="width: 200px">
+              <option>Gerar OP</option>
+              <option>Aglutinar Produtos para gerar OP</option>
+            </select>
+          </div><br>
+          <table class="tabela">
+            <tbody>
+              <tr>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cod. Produto</span></th>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Descrição do Produto</span></th>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">proposta comercial</span></th>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cliente</span></th>
+                <th style="text-align: center;">Prev. Entrega Cliente</th>
+                <th style="text-align: center;">Quântico.</th>
+                <th style="text-align: center;">Estoque</th>
+                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Reservar Expedição</th>
+                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Quant. Produzir</th>
+                <th style="">ação</th>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>CST040003</td>
+                <td>Caso X115 Magnética</td>
+                <td>000451</td>
+                <td>Solinfitec</td>
+                <td>09/04/2025</td>
+                <td>2500</td>
+                <td>1000</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style=""><input type="checkbox"></td>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>PLG040002</td>
+                <td>Plug magnético C</td>
+                <td>000452</td>
+                <td>Solinfitec</td>
+                <td>09/04/2025</td>
+                <td>2000</td>
+                <td>1500</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style=""><input type="checkbox"></td>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>BRC040003</td>
+                <td>Braço curto B PT</td>
+                <td>000545</td>
+                <td>Solinftec</td>
+                <td>09/04/2025</td>
+                <td>250</td>
+                <td>750</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style=""><input type="checkbox"></td>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>CST040231</td>
+                <td>HEXÁGONO</td>
+                <td>000555</td>
+                <td>Robert Bos LTDA</td>
+                <td>09/04/2025</td>
+                <td>900</td>
+                <td>2540</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style=""><input type="checkbox"></td>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>CST040003</td>
+                <td>Caso X115 Magnética</td>
+                <td>000587</td>
+                <td>Solinftec</td>
+                <td>09/04/2025</td>
+                <td>70</td>
+                <td>0</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style=""><input type="checkbox"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <br>
+          <h3>
+            <button class="acao-secundaria" style="text-align: right">Gravar</button>
+            <button class="acao-secundaria" style="margin: 0 auto; display: block;">
+              Produtos Acabados com Proposta de Aglutinação de OP
+            </button>
+          </h3>
+
+          <table class="tabela">
+            <tbody>
+              <tr>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cod. Produto</span></th>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Descrição do Produto</span></th>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Proposta Comercial</span></th>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cliente</span></th>
+                <th style="text-align: center;">Prev. Entrega Cliente</th>
+                <th style="text-align: center;">Quântico.</th>
+                <th style="text-align: center;">Estoque</th>
+                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Reservar Expedição</th>
+                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Quant. Produzir</th>
+                <th style="text-align: center;">Quântico. Total</th>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td rowspan="2" style="text-align: center;">CST040003</td>
+                <td rowspan="2" style="text-align: center;">Caso X115 Magnética</td>
+                <td>000451</td>
+                <td>Solinfitec</td>
+                <td>09/04/2025</td>
+                <td>2500</td>
+                <td>1000</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td rowspan="2" style="text-align: center;">2570<i class="bi bi-trash" style="font-size: 15px; cursor: pointer; color: red; margin-left: 0.5rem;"></i></td>
+              </tr>
+              <tr style="cursor: pointer;">
+                <td>000587</td>
+                <td>Solinftec</td>
+                <td>09/04/2025</td>
+                <td>70</td>
+                <td>0</td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div v-if="abaAtiva === 'ordens'" class="bloco margem" style="width: 140%; max-width: 1400px; margin: 0 auto;">
+          <div style="text-align: center;">
+            <a>
+              <h3>
+                <button class="acao-secundaria" style="margin: 0 auto; display: block;">Ordens de produção oriundas de propostas ou para estoque</button>
+              </h3>
+            </a>
+          </div><br><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalNovaOP">
+              <span class="v-btn__overlay"></span>
+              <span class="v-btn__underlay"></span>
+              <span class="v-btn__content" data-no-activator="">
+                <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                <span>Nova Ordem de Produção</span>
+              </span>
+            </button>
+          </div>
+          <h3>
+          </h3>
+          <table class="tabela">
+            <tbody><tr>
+              <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">OP</span></th>
+              <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Tipo de Produto</span></th><th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cod. Produto</span></th><th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Descrição do Produto</font></font></font></font></font></font></span></th>
+              <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Proposta Comercial</font></font></font></font></font></font></span></th>
+              <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cliente</font></font></font></font></font></font></span></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Prev. Entrega Cliente</font></font></font></font></font></font></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Quantidade</font></font></font></font></font></font></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Estoque</font></font></font></font></font></font></th>
+              <th style="text-align: center; "><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Quant. Produzir</font></font></font></font></font></font></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Prev. de Conclusão</font></font></font></font></font></font></th>
+              <th style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Data Conclusão</font></font></font></font></font></font></th>
+            </tr>
+          </tbody><tbody>
+            <tr style="cursor: pointer;">
+              <td rowspan="2" style="text-align: center;">OP4450</td>
+              <td rowspan="2" style="text-align: center;">Prod. Acabado</td><td rowspan="2" style="text-align: center;">CST040003</td>
+              <td rowspan="2" style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Caso X115 Magnética</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">000451</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cofermeta Sa</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">09/04/2025</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2500</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1000</font></font></font></font></td>
+              <td style=""><span>1500</span></td>
+              <td style=""><span>10/04/2025</span></td>
+              <td rowspan="2" style="text-align: center;"><font style="vertical-align: inherit;"></font>09/04/2025</td>
+            </tr>
+            <tr style="cursor: pointer;">
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">000587</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solinfitec</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">09/04/2025</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">70</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0</font></font></font></font></td>
+              <td style=""><span>70</span></td>
+              <td style=""><span>10/04/2025</span></td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr style="cursor: pointer;">
+              <td rowspan="2" style="text-align: center;">OP4453</td>
+              <td rowspan="2" style="text-align: center;">Prod. Acabado</td><td rowspan="2" style="text-align: center;">CST040007</td>
+              <td rowspan="2" style="text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Case A9 Magnética</font></font></font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">000472</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gerdal SA</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">09/04/2025</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2500</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1000</font></font></font></font></td>
+              <td style=""><span>1500</span></td>
+              <td style=""><span>10/04/2025</span></td>
+              <td rowspan="2" style="text-align: center;"><font style="vertical-align: inherit;">09/04/2025</font></td>
+            </tr>
+            <tr style="cursor: pointer;">
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">000574</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solinfitec</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">09/04/2025</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">110</font></font></font></font></td>
+              <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0</font></font></font></font></td>
+              <td style=""><span>110</span></td>
+              <td style=""><span>10/04/2025</span></td>
+            </tr>
+            <tr style="cursor: pointer;">
+              <td style="text-align: center;">OP4520</td>
+              <td style="text-align: center;">Prod. Acabado</td><td style="text-align: center;">CST040007</td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Case A9 Magnética </font></font></font></font></font></font></font></td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ESTOQUE</font></font></font></font></font></font></font></font></td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ALMOX</font></font></font></font></font></font></font></font></td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1000</font></font></font></font></font></font></font></font></td><td style=""><span>1000</span></td>
+              <td style=""><span>08/04/2025</span></td>
+              <td style=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">10/04/2025</font></font></td>
+            </tr>
+            <tr style="cursor: pointer;">
+              <td>OP4524</td>
+              <td>Prod. Intermediário</td>
+              <td>BSE400050</td>
+              <td>Base adesiva</td>
+              <td>ESTOQUE</td>
+              <td>ALMOX</td>
+              <td>01/04/2025</td>
+              <td>1500</td>
+              <td>0</td>
+              <td>1500</td>
+              <td>10/04/2025</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div v-if="abaAtiva === 'kanban'" class="kanban-container">
           <div class="kanban-board">
             <div class="colunaKanban bloco" style="border-color: rgb(255, 145, 0);">
               <h3>OP OK</h3>
@@ -480,15 +739,225 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal Nova OP -->
+    <div v-if="showModalNovaOP" class="modal-overlay" @click.self="fecharModalNovaOP">
+      <div class="modal-content">
+        <button class="modal-close" @click="fecharModalNovaOP">&times;</button>
+        <div class="margem">
+          <div class="bloco">
+            <div class="margem grid-3">
+              <div>
+                <label>Produto</label>
+                <input type="text" value="BRC040006 - Braço Autotravante Curto B">
+              </div>
+              <div>
+                <label>Previsão de Conclusão</label>
+                <input type="date">
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="adicionarDestino">
+                <span class="v-btn__overlay"></span>
+                <span class="v-btn__underlay"></span>
+                <span class="v-btn__content" data-no-activator="">
+                  <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
+                </span>
+              </button>
+            </div>
+            <table class="tabela">
+              <tbody>
+                <tr>
+                  <th scope="col" style="white-space: nowrap;">Destino</th>
+                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                  <th scope="col" style="white-space: nowrap;">Anexo</th>
+                </tr>
+                <tr style="cursor: pointer;">
+                  <td>COFERMETA SA</td>
+                  <td><input type="text" size="7" value="150"></td>
+                  <td>000545</td>
+                </tr>
+                <tr style="cursor: pointer;">
+                  <td>USINA ALTO VERDE</td>
+                  <td><input type="text" size="7" value="500"></td>
+                  <td>000545</td>
+                </tr>
+                <tr style="cursor: pointer;">
+                  <td>ESTOQUE</td>
+                  <td><input type="text" size="7" value="1000"></td>
+                  <td>000545</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="margem grid-3">
+              <div>
+                <label>Quantidade a Produzir</label>
+                <input type="number" value="1650">
+              </div>
+            </div>
+          </div>
+          <div class="bloco margem">
+            <h3>Itens do Produto</h3>
+            <br>
+            <table class="tabela">
+              <tbody>
+                <tr>
+                  <th scope="col" style="white-space: nowrap;">Item</th>
+                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                </tr>
+                <tr style="cursor: pointer;">
+                  <td>Base 1,5 pol Solinfitec</td>
+                  <td><input type="text" size="7" value="150"></td>
+                </tr>
+                <tr style="cursor: pointer;">
+                  <td>Braço 95mm 1,5 pol Solinfitec</td>
+                  <td><input type="text" size="7" value="500"></td>
+                </tr>
+                <tr style="cursor: pointer;">
+                  <td>Base 1,5 pol Solinfitec</td>
+                  <td><input type="text" size="7" value="1000"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bloco margem">
+            <h3>Informações Adicionais</h3>
+            <br>
+            <div class="grid-2">
+              <div>
+                <label>Data de Início da Produção</label>
+                <input type="date">
+              </div>
+              <div>
+                <label>Data de Conclusão da Produção</label>
+                <input type="date">
+              </div>
+            </div>
+          </div>
+          <div class="bloco margem">
+            <h3>Observações</h3>
+            <br>
+            <div>
+              <textarea type="text"></textarea>
+            </div>
+          </div>
+          <div class="submit direita margem">
+            <button class="btn btn-primary" @click="salvarNovaOP">Salvar</button>
+            <button class="btn btn-secondary" @click="fecharModalNovaOP">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Adicionar Produto Estoque -->
+    <div v-if="showModalAdicionarEstoque" class="modal-overlay" @click.self="fecharModalAdicionarEstoque">
+      <div class="modal-content">
+        <button class="modal-close" @click="fecharModalAdicionarEstoque">&times;</button>
+        <div class="bloco margem">
+          <h2>Criar Ordem de Produção</h2>
+          <div class="bloco">
+            <div class="margem grid-3">
+              <div>
+                <label>Produto</label>
+                <input type="text" v-model="novoProdutoEstoque.produto" readonly="readonly">
+              </div>
+              <div>
+                <label>Previsão de Conclusão</label>
+                <input type="date" v-model="novoProdutoEstoque.previsaoConclusao">
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <button type="button" class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="adicionarDestinoEstoque">
+                <span class="v-btn__overlay"></span>
+                <span class="v-btn__underlay"></span>
+                <span data-no-activator="" class="v-btn__content">
+                  <i aria-hidden="true" class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default"></i>
+                </span>
+              </button>
+            </div>
+            <table class="tabela">
+              <tbody>
+                <tr>
+                  <th scope="col" style="white-space: nowrap;">Destino</th>
+                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                  <th scope="col" style="white-space: nowrap;">Anexo</th>
+                </tr>
+                <tr v-for="(destino, index) in destinosEstoque" :key="index" style="cursor: pointer;">
+                  <td>
+                    <select v-model="destino.nome" class="form-control">
+                      <option value="COFERMETA SA">COFERMETA SA</option>
+                      <option value="USINA ALTO VERDE">USINA ALTO VERDE</option>
+                      <option value="ESTOQUE">ESTOQUE</option>
+                    </select>
+                  </td>
+                  <td><input type="text" size="7" v-model="destino.quantidade"></td>
+                  <td><input type="text" v-model="destino.anexo"></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="margem grid-3">
+              <div>
+                <label>Quantidade a Produzir</label>
+                <input type="number" v-model="novoProdutoEstoque.quantidadeProducao">
+              </div>
+            </div>
+          </div>
+          <div class="bloco margem">
+            <h3>Itens do Produto</h3>
+            <br>
+            <table class="tabela">
+              <tbody>
+                <tr>
+                  <th scope="col" style="white-space: nowrap;">Item</th>
+                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                </tr>
+                <tr v-for="(item, index) in itensProdutoEstoque" :key="index" style="cursor: pointer;">
+                  <td>{{ item.nome }}</td>
+                  <td><input type="text" size="7" v-model="item.quantidade"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bloco margem">
+            <h3>Informações Adicionais</h3>
+            <br>
+            <div class="grid-2">
+              <div>
+                <label>Data de Início da Produção</label>
+                <input type="date" v-model="novoProdutoEstoque.dataInicio">
+              </div>
+              <div>
+                <label>Data de Conclusão da Produção</label>
+                <input type="date" v-model="novoProdutoEstoque.dataConclusao">
+              </div>
+            </div>
+          </div>
+          <div class="bloco margem">
+            <h3>Observações</h3>
+            <br>
+            <div>
+              <textarea v-model="novoProdutoEstoque.observacoes"></textarea>
+            </div>
+          </div>
+          <div class="submit direita margem">
+            <button class="btn btn-primary" @click="salvarProdutoEstoque">Salvar</button>
+            <button class="btn btn-secondary" @click="fecharModalAdicionarEstoque">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     new Vue({
       el: '#producao',
       data: {
+        abaAtiva: 'gestao',
         showModal: false,
         showModalComprar: false,
         showModalProducao: false,
+        showModalNovaOP: false,
+        showModalAdicionarEstoque: false,
         materialSelecionado: {
           nome: '',
           quantidade: 0,
@@ -577,13 +1046,53 @@
         ],
         dataInicioProducao: '',
         dataConclusaoProducao: '',
-        observacoesProducao: ''
+        observacoesProducao: '',
+        novaOP: {
+          produto: 'BRC040006 - Braço Autotravante Curto B',
+          previsaoConclusao: '',
+          destinos: [
+            { nome: 'COFERMETA SA', quantidade: '150', anexo: '000545' },
+            { nome: 'USINA ALTO VERDE', quantidade: '500', anexo: '000545' },
+            { nome: 'ESTOQUE', quantidade: '1000', anexo: '000545' }
+          ],
+          quantidadeProducao: 1650,
+          itensProduto: [
+            { nome: 'Base 1,5 pol Solinfitec', quantidade: '150' },
+            { nome: 'Braço 95mm 1,5 pol Solinfitec', quantidade: '500' },
+            { nome: 'Base 1,5 pol Solinfitec', quantidade: '1000' }
+          ],
+          dataInicio: '',
+          dataConclusao: '',
+          observacoes: ''
+        },
+        novoProdutoEstoque: {
+          produto: '',
+          previsaoConclusao: '',
+          quantidadeProducao: 0,
+          dataInicio: '',
+          dataConclusao: '',
+          observacoes: ''
+        },
+        destinosEstoque: [
+          { nome: 'COFERMETA SA', quantidade: '', anexo: '000545' },
+          { nome: 'USINA ALTO VERDE', quantidade: '', anexo: '000545' },
+          { nome: 'ESTOQUE', quantidade: '', anexo: '000545' }
+        ],
+        itensProdutoEstoque: [
+          {
+            nome: 'PMP010006 - CHAPA POLIESTIRENO PRETO COM FILME 1000 X 2000 X 3MM',
+            quantidade: 0
+          }
+        ]
       },
       methods: {
+        mudarAba(aba) {
+          this.abaAtiva = aba;
+        },
         abrirModalTratarOP(tarefa) {
           this.opSelecionada = {
             produto: tarefa.codigo,
-            quantidade: 1650,
+            quantidade: parseInt(tarefa.quantidade),
             previsaoConclusao: tarefa.previsao,
             observacoes: '',
             status: 'Em andamento'
@@ -599,6 +1108,45 @@
             observacoes: '',
             status: 'Em andamento'
           };
+        },
+        salvarOP() {
+          // Validar dados antes de salvar
+          if (!this.validarOP()) {
+            return;
+          }
+
+          // Atualizar a tarefa no kanban
+          const colunas = ['OP OK', 'OP Com pendência'];
+          for (const coluna of colunas) {
+            const index = this.kanban[coluna].findIndex(t => t.codigo === this.opSelecionada.produto);
+            if (index !== -1) {
+              this.kanban[coluna][index].quantidade = this.opSelecionada.quantidade;
+              this.kanban[coluna][index].previsao = this.opSelecionada.previsaoConclusao;
+              break;
+            }
+          }
+
+          console.log('Dados da OP:', this.opSelecionada);
+          alert('Ordem de produção atualizada com sucesso!');
+          this.fecharModal();
+        },
+        validarOP() {
+          if (!this.opSelecionada.produto) {
+            alert('Selecione uma ordem de produção');
+            return false;
+          }
+
+          if (this.opSelecionada.quantidade <= 0) {
+            alert('A quantidade deve ser maior que zero');
+            return false;
+          }
+
+          if (!this.opSelecionada.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
+
+          return true;
         },
         abrirModalComprar(material) {
           this.materialSelecionado = { ...material };
@@ -742,6 +1290,120 @@
         },
         onEnd(evt) {
           console.log('Card movido:', evt);
+        },
+        abrirModalNovaOP() {
+          this.showModalNovaOP = true;
+        },
+        fecharModalNovaOP() {
+          this.showModalNovaOP = false;
+          this.novaOP = {
+            produto: 'BRC040006 - Braço Autotravante Curto B',
+            previsaoConclusao: '',
+            destinos: [
+              { nome: 'COFERMETA SA', quantidade: '150', anexo: '000545' },
+              { nome: 'USINA ALTO VERDE', quantidade: '500', anexo: '000545' },
+              { nome: 'ESTOQUE', quantidade: '1000', anexo: '000545' }
+            ],
+            quantidadeProducao: 1650,
+            itensProduto: [
+              { nome: 'Base 1,5 pol Solinfitec', quantidade: '150' },
+              { nome: 'Braço 95mm 1,5 pol Solinfitec', quantidade: '500' },
+              { nome: 'Base 1,5 pol Solinfitec', quantidade: '1000' }
+            ],
+            dataInicio: '',
+            dataConclusao: '',
+            observacoes: ''
+          };
+        },
+        salvarNovaOP() {
+          // Validar dados antes de salvar
+          if (!this.validarNovaOP()) {
+            return;
+          }
+
+          console.log('Dados da nova OP:', this.novaOP);
+          alert('Nova ordem de produção criada com sucesso!');
+          this.fecharModalNovaOP();
+        },
+        validarNovaOP() {
+          if (!this.novaOP.produto) {
+            alert('Informe o produto');
+            return false;
+          }
+
+          if (this.novaOP.quantidadeProducao <= 0) {
+            alert('A quantidade a produzir deve ser maior que zero');
+            return false;
+          }
+
+          if (!this.novaOP.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
+
+          return true;
+        },
+        abrirModalAdicionarEstoque() {
+          this.showModalAdicionarEstoque = true;
+          this.novoProdutoEstoque = {
+            produto: '',
+            previsaoConclusao: new Date().toISOString().split('T')[0],
+            quantidadeProducao: 0,
+            dataInicio: new Date().toISOString().split('T')[0],
+            dataConclusao: new Date().toISOString().split('T')[0],
+            observacoes: ''
+          };
+          this.destinosEstoque = [
+            { nome: 'COFERMETA SA', quantidade: '', anexo: '000545' },
+            { nome: 'USINA ALTO VERDE', quantidade: '', anexo: '000545' },
+            { nome: 'ESTOQUE', quantidade: '', anexo: '000545' }
+          ];
+        },
+        fecharModalAdicionarEstoque() {
+          this.showModalAdicionarEstoque = false;
+          this.novoProdutoEstoque = {
+            produto: '',
+            previsaoConclusao: '',
+            quantidadeProducao: 0,
+            dataInicio: '',
+            dataConclusao: '',
+            observacoes: ''
+          };
+          this.destinosEstoque = [];
+        },
+        adicionarDestinoEstoque() {
+          this.destinosEstoque.push({
+            nome: '',
+            quantidade: '',
+            anexo: '000545'
+          });
+        },
+        salvarProdutoEstoque() {
+          if (!this.validarProdutoEstoque()) {
+            return;
+          }
+
+          console.log('Dados do novo produto:', this.novoProdutoEstoque);
+          alert('Produto adicionado ao estoque com sucesso!');
+          this.fecharModalAdicionarEstoque();
+        },
+        validarProdutoEstoque() {
+          if (!this.novoProdutoEstoque.produto) {
+            alert('Informe o produto');
+            return false;
+          }
+
+          if (this.novoProdutoEstoque.quantidadeProducao <= 0) {
+            alert('A quantidade a produzir deve ser maior que zero');
+            return false;
+          }
+
+          if (!this.novoProdutoEstoque.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
+
+          return true;
         }
       }
     });
