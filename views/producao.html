@@ -114,6 +114,9 @@
       overflow-y: auto;
       padding: 20px 0;
     }
+    .modal-overlay[data-modal="producao"] {
+      z-index: 10000;
+    }
     .modal-content {
       background: var(--cor-bg);
       padding: var(--margem);
@@ -784,12 +787,12 @@
     </div>
 
     <!-- Modal Produção -->
-    <div v-if="showModalProducao" class="modal-overlay" @click.self="fecharModalProducao">
+    <div v-if="showModalProducao" class="modal-overlay" data-modal="producao" @click.self="fecharModalProducao">
       <div class="modal-content">
         <button class="modal-close" @click="fecharModalProducao">&times;</button>
         <div class="bloco margem">
           <h2>Criar Ordem de Produção</h2>
-          <div class="bloco">
+          <div style="" class="bloco">
             <div class="margem grid-3">
               <div>
                 <label>Produto</label>
@@ -892,9 +895,9 @@
             <table class="tabela">
               <tbody>
                 <tr>
-                  <td>OP4453</td>
-                  <td>OP4455</td>
-                  <td>OP4490</td>
+                  <td>OP4450</td>
+                  <td>OP4520</td>
+                  <td>OP4424</td>
                 </tr>
               </tbody>
             </table>
@@ -915,7 +918,7 @@
                 <td><input type="text" size="7"></td>
                 <td>400</td>
                 <td>
-                  <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                  <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalCompra">
                     <span class="v-btn__overlay"></span>
                     <span class="v-btn__underlay"></span>
                     <span data-no-activator="" class="v-btn__content">
@@ -925,7 +928,7 @@
                   </button>
                 </td>
                 <td>
-                  <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria">
+                  <button class="v-btn v-btn--elevated v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated acao-secundaria" @click="abrirModalProducao">
                     <span class="v-btn__overlay"></span>
                     <span class="v-btn__underlay"></span>
                     <span data-no-activator="" class="v-btn__content">
@@ -1046,6 +1049,50 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal Compra -->
+    <div v-if="showModalCompra" class="modal-overlay" @click.self="fecharModalCompra">
+      <div class="modal-content">
+        <button class="modal-close" @click="fecharModalCompra">&times;</button>
+        <div class="bloco margem">
+          <h2>Solicitar Compra de Material</h2>
+          <form>
+            <div class="grid-3">
+              <div class="form-group">
+                <label>Produto</label>
+                <input type="text" readonly="readonly" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Quantidade</label>
+                <input type="number" min="1" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>Previsão de Entrega</label>
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Sugestão de Fornecedor</label>
+                <select class="form-control">
+                  <option value="">Selecione um fornecedor</option>
+                  <option value="1">Fornecedor A</option>
+                  <option value="2">Fornecedor B</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Observações</label>
+              <textarea rows="3" class="form-control"></textarea>
+            </div>
+            <div class="margem">
+              <button type="submit" class="btn btn-primary">Confirmar Pedido de Compra</button>
+              <button type="button" class="btn btn-secondary" @click="fecharModalCompra">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1061,6 +1108,7 @@
           showModalComprar: false,
           showModalProducao: false,
           showModalNovaOP: false,
+          showModalCompra: false,
           materialSelecionado: {
             nome: '',
             quantidade: 0,
@@ -1619,6 +1667,18 @@
                 this.ordensProducao.push(ordemFormatada);
               }
             }
+          },
+          fecharModalCompra() {
+            this.showModalCompra = false;
+          },
+          abrirModalCompra() {
+            this.showModalCompra = true;
+          },
+          abrirModalProducao() {
+            this.showModalProducao = true;
+          },
+          fecharModalProducao() {
+            this.showModalProducao = false;
           }
         }
       });
