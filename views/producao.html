@@ -5,6 +5,7 @@
   <title>Produção</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link href="../css/thalamus.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuedraggable@2.24.3/dist/vuedraggable.umd.min.js"></script>
   <style>
@@ -298,7 +299,7 @@
           <div style="text-align: center;">
             <a>
               <h3>
-                <button class="acao-secundaria" style="margin: 0 auto; display: block;">
+                <button class="acao-secundaria" style="margin: 0 auto; display: block; background: none;">
                   Produtos Acabados oriundo de Propostas Comerciais para programação de produção ou reserva de estoque
                 </button>
               </h3>
@@ -313,12 +314,8 @@
                 <span>Adicionar produto - estoque</span>
               </span>
             </button>
-            <select style="width: 200px">
-              <option>Gerar OP</option>
-              <option>Aglutinar Produtos para gerar OP</option>
-            </select>
           </div><br>
-          <table class="tabela">
+          <table class="tabela" id="tb1">
             <tbody>
               <tr>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cod. Produto</span></th>
@@ -328,8 +325,8 @@
                 <th style="text-align: center;">Prev. Entrega Cliente</th>
                 <th style="text-align: center;">Quantidade.</th>
                 <th style="text-align: center;">Estoque</th>
-                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Reservar Expedição</th>
-                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Quant. Produzir</th>
+                <th style="text-align: center;">Reservar Expedição</th>
+                <th style="text-align: center;">Quant. Produzir</th>
                 <th style="">ação</th>
               </tr>
               <tr style="cursor: pointer;">
@@ -340,8 +337,8 @@
                 <td>09/04/2025</td>
                 <td>2500</td>
                 <td>1000</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
                 <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
@@ -352,8 +349,8 @@
                 <td>09/04/2025</td>
                 <td>2000</td>
                 <td>1500</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
                 <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
@@ -364,8 +361,8 @@
                 <td>09/04/2025</td>
                 <td>250</td>
                 <td>750</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
                 <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
@@ -376,8 +373,8 @@
                 <td>09/04/2025</td>
                 <td>900</td>
                 <td>2540</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
                 <td><input type="checkbox"></td>
               </tr>
               <tr style="cursor: pointer;">
@@ -388,8 +385,8 @@
                 <td>09/04/2025</td>
                 <td>70</td>
                 <td>0</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
                 <td><input type="checkbox"></td>
               </tr>
               <tr v-for="(produto, index) in produtosEstoque" :key="index" style="cursor: pointer;">
@@ -400,8 +397,8 @@
                 <td><input type="date" v-model="produto.prevEntrega"></td>
                 <td><input type="number" v-model="produto.quantico"></td>
                 <td>1000</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="number" v-model="produto.reservarExpedicao"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="number" v-model="produto.quantProduzir"></td>
+                <td><input type="number" v-model="produto.reservarExpedicao"></td>
+                <td><input type="number" v-model="produto.quantProduzir"></td>
                 <td><input type="checkbox" v-model="produto.acao"></td>
               </tr>
             </tbody>
@@ -415,9 +412,10 @@
             </button>
           </h3>
 
-          <table class="tabela">
+          <table class="tabela" id="tb2">
             <tbody>
               <tr>
+                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">OP</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cod. Produto</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Descrição do Produto</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Proposta Comercial</span></th>
@@ -425,11 +423,13 @@
                 <th style="text-align: center;">Prev. Entrega Cliente</th>
                 <th style="text-align: center;">Quantidade.</th>
                 <th style="text-align: center;">Estoque</th>
-                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Reservar Expedição</th>
-                <th style="text-align: center; background-color: rgba(255, 0, 0, 0.1);">Quant. Produzir</th>
+                <th style="text-align: center;">Reservar Expedição</th>
+                <th style="text-align: center;">Quant. Produzir</th>
                 <th style="text-align: center;">Quantidade. Total</th>
+                <th style="text-align: center;">Excluir</th>
               </tr>
-              <tr style="cursor: pointer;">
+              <tr style="cursor: pointer;" @click.stop="abrirModalEditarOP">
+                <td rowspan="2" style="text-align: center;">OP4450</td>
                 <td rowspan="2" style="text-align: center;">CST040003</td>
                 <td rowspan="2" style="text-align: center;">Caso X115 Magnética</td>
                 <td>000451</td>
@@ -437,9 +437,10 @@
                 <td>09/04/2025</td>
                 <td>2500</td>
                 <td>1000</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td rowspan="2" style="text-align: center;">2570<i class="bi bi-trash" style="font-size: 15px; cursor: pointer; color: red; margin-left: 0.5rem;"></i></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td rowspan="2" style="text-align: center;">2570</td>
+                <td rowspan="2" style="text-align: center;"><i class="bi bi-trash" style="font-size: 20px; cursor: pointer; color: red;" @click.stop="excluirOP"></i></td>
               </tr>
               <tr style="cursor: pointer;">
                 <td>000587</td>
@@ -447,8 +448,8 @@
                 <td>09/04/2025</td>
                 <td>70</td>
                 <td>0</td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
-                <td style="background-color: rgba(255, 0, 0, 0.1);"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
               </tr>
             </tbody>
           </table>
@@ -488,7 +489,7 @@
           <table class="tabela" id="1">
             <tbody>
               <tr>
-                <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">OP</span></th>
+              <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">OP</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Tipo de Produto</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Cod. Produto</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Descrição do Produto</span></th>
@@ -501,7 +502,7 @@
                 <th style="text-align: center;">Prev. de Conclusão</th>
                 <th style="text-align: center;">Data Conclusão</th>
                 <th style="text-align: center;">Selecionar</th>
-              </tr>
+            </tr>
             </tbody>
             <tbody>
               <template v-for="(item, index) in ordensProducao">
@@ -524,7 +525,7 @@
                       <span class="slider round"></span>
                     </label>
                   </td>
-                </tr>
+            </tr>
                 <tr style="cursor: pointer;" v-if="item.detalhes" :key="'details-'+index" :class="{ 'linha-pendente': index === 0 || index === 2 || index === 3, 'fonte-laranja': item.op === 'OP4450' || item.op === 'OP4520' || item.op === 'OP4524', 'fonte-azul': item.op === 'OP4453' }">
                   <td>{{ item.detalhes.propostaComercial }}</td>
                   <td>{{ item.detalhes.cliente }}</td>
@@ -533,9 +534,9 @@
                   <td>{{ item.detalhes.estoque }}</td>
                   <td style=""><span>{{ item.detalhes.quantProduzir }}</span></td>
                   <td style=""><span>{{ item.detalhes.prevConclusao }}</span></td>
-                </tr>
+            </tr>
               </template>
-            </tbody>
+          </tbody>
           </table>
         </div>
         <br>
@@ -552,14 +553,14 @@
               <span class="v-btn__underlay"></span>
               <span class="v-btn__content" data-no-activator="">
                 <i class="mdi-plus mdi v-icon notranslate v-theme--light v-icon--size-default" aria-hidden="true"></i>
-                <span>Materiais pendentes</span>
+                <!-- <span>Materiais .</span> -->
               </span>
             </button>
           </div>
           <h3>
           </h3>
           <table class="tabela" id="2">
-            <tbody>
+          <tbody>
               <tr>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">OP</span></th>
                 <th scope="col" style="white-space: nowrap;"><span style="cursor: pointer;">Tipo de Produto</span></th>
@@ -574,7 +575,7 @@
                 <th style="text-align: center;">Prev. de Conclusão</th>
                 <th style="text-align: center;">Data Conclusão</th>
                 <th style="text-align: center;">Selecionar</th>
-              </tr>
+            </tr>
             </tbody>
             <tbody>
               <template v-for="(item, index) in ordensSelecionadas">
@@ -597,7 +598,7 @@
                       <span class="slider round"></span>
                     </label>
                   </td>
-                </tr>
+            </tr>
                 <tr style="cursor: pointer;" v-if="item.detalhes" :key="'details-'+index">
                   <td>{{ item.detalhes.propostaComercial }}</td>
                   <td>{{ item.detalhes.cliente }}</td>
@@ -606,10 +607,10 @@
                   <td>{{ item.detalhes.estoque }}</td>
                   <td style=""><span>{{ item.detalhes.quantProduzir }}</span></td>
                   <td style=""><span>{{ item.detalhes.prevConclusao }}</span></td>
-                </tr>
+            </tr>
               </template>
-            </tbody>
-          </table>
+          </tbody>
+        </table>
         </div>
 
         <!-- Aba Kanban -->
@@ -889,8 +890,8 @@
       <div class="modal-content">
         <button class="modal-close" @click="fecharModalNovaOP">&times;</button>
         <h2>Tratar Ordem de Produção</h2>
-        <div class="bloco">
-          <div class="margem grid-3">
+          <div class="bloco">
+            <div class="margem grid-3">
             <label>OPs afetadas</label>
             <table class="tabela">
               <tbody>
@@ -901,19 +902,19 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+              </div>
           <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"></div>
-          <table class="tabela">
-            <tbody>
-              <tr>
+            <table class="tabela">
+              <tbody>
+                <tr>
                 <th scope="col" style="white-space: nowrap;">Produto</th>
-                <th scope="col" style="white-space: nowrap;">Quantidade</th>
+                  <th scope="col" style="white-space: nowrap;">Quantidade</th>
                 <th scope="col" style="white-space: nowrap;">Estoque</th>
                 <th scope="col" style="white-space: nowrap;">Comprar</th>
                 <th scope="col" style="white-space: nowrap;">Produzir</th>
                 <th scope="col" style="white-space: nowrap;">Prev. Conclusão</th>
-              </tr>
-              <tr style="cursor: pointer;">
+                </tr>
+                <tr style="cursor: pointer;">
                 <td>INJ010010 - FRONTAL M7 T113 T116</td>
                 <td><input type="text" size="7"></td>
                 <td>400</td>
@@ -938,8 +939,8 @@
                   </button>
                 </td>
                 <td><input type="date"></td>
-              </tr>
-              <tr style="cursor: pointer;">
+                </tr>
+                <tr style="cursor: pointer;">
                 <td>FIX010033 - PAR PH AAT 2,9 X 6,5 PAN PRATA</td>
                 <td><input type="text" size="7"></td>
                 <td>1500</td>
@@ -964,8 +965,8 @@
                   </button>
                 </td>
                 <td><input type="date"></td>
-              </tr>
-              <tr style="cursor: pointer;">
+                </tr>
+                <tr style="cursor: pointer;">
                 <td>FIX010013 - ARRUELA 5/32 POL LISA PRATA</td>
                 <td><input type="text" size="7"></td>
                 <td>3000</td>
@@ -1042,11 +1043,11 @@
                   </button>
                 </td>
                 <td><input type="date"></td>
-              </tr>
-            </tbody>
-          </table>
+                </tr>
+              </tbody>
+            </table>
           <div class="margem grid-3"></div>
-        </div>
+          </div>
       </div>
     </div>
 
@@ -1054,7 +1055,7 @@
     <div v-if="showModalCompra" class="modal-overlay" @click.self="fecharModalCompra">
       <div class="modal-content">
         <button class="modal-close" @click="fecharModalCompra">&times;</button>
-        <div class="bloco margem">
+          <div class="bloco margem">
           <h2>Solicitar Compra de Material</h2>
           <form>
             <div class="grid-3">
@@ -1069,8 +1070,8 @@
               <div class="form-group">
                 <label>Previsão de Entrega</label>
                 <input type="date" class="form-control">
-              </div>
             </div>
+          </div>
             <div class="grid-2">
               <div class="form-group">
                 <label>Sugestão de Fornecedor</label>
@@ -1079,17 +1080,96 @@
                   <option value="1">Fornecedor A</option>
                   <option value="2">Fornecedor B</option>
                 </select>
-              </div>
             </div>
+          </div>
             <div class="form-group">
               <label>Observações</label>
               <textarea rows="3" class="form-control"></textarea>
-            </div>
+          </div>
             <div class="margem">
               <button type="submit" class="btn btn-primary">Confirmar Pedido de Compra</button>
               <button type="button" class="btn btn-secondary" @click="fecharModalCompra">Cancelar</button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Editar OP -->
+    <div v-if="showModalEditarOP" class="modal-overlay" @click.self="fecharModalEditarOP">
+      <div class="modal-content" style="max-width: 90%; max-height: 90vh; overflow-y: auto;">
+        <button class="modal-close" @click="fecharModalEditarOP">&times;</button>
+        <div class="bloco margem">
+          <h2>Editar Ordem de Produção</h2>
+          
+          <!-- Informações do Produto (Read-only) -->
+          <div class="grid-3">
+            <div class="form-group">
+              <label>OP</label>
+              <input type="text" v-model="opEditando.numero" readonly class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Código do Produto</label>
+              <input type="text" v-model="opEditando.codigoProduto" readonly class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Descrição do Produto</label>
+              <input type="text" v-model="opEditando.descricaoProduto" readonly class="form-control">
+            </div>
+          </div>
+
+          <!-- Lista de Itens -->
+          <div class="margem">
+            <h3>Itens da OP</h3>
+            <div v-for="(item, index) in opEditando.itens" :key="index" class="item-op margem">
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>Proposta Comercial</label>
+                  <input type="text" v-model="item.propostaComercial" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Cliente</label>
+                  <input type="text" v-model="item.cliente" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Previsão de Entrega</label>
+                  <input type="date" v-model="item.prevEntrega" class="form-control">
+                </div>
+              </div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>Quantidade</label>
+                  <input type="number" v-model="item.quantidade" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Estoque</label>
+                  <input type="number" v-model="opEditando.estoque" readonly class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Quantidade Total</label>
+                  <input type="number" v-model="item.quantidadeTotal" readonly class="form-control">
+                </div>
+              </div>
+              <div class="margem">
+                <button class="btn btn-danger" @click="removerItem(index)" v-if="opEditando.itens.length > 1">
+                  <i class="bi bi-trash"></i> Remover Item
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botão Adicionar Item -->
+          <div class="margem">
+            <button class="btn btn-success" @click="adicionarItem">
+              <i class="bi bi-plus"></i> Adicionar Item
+            </button>
+          </div>
+
+          <!-- Botões de Ação -->
+          <div class="margem">
+            <button class="btn btn-primary" @click="salvarEdicaoOP">Salvar</button>
+            <button class="btn btn-secondary" @click="fecharModalEditarOP">Cancelar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1100,122 +1180,130 @@
       console.log('DOM carregado');
       console.log('Inicializando Vue...');
       console.log('Elemento #producao:', document.getElementById('producao'));
-      new Vue({
-        el: '#producao',
-        data: {
-          abaAtiva: 'gestao',
-          showModal: false,
-          showModalComprar: false,
-          showModalProducao: false,
-          showModalNovaOP: false,
-          showModalCompra: false,
-          materialSelecionado: {
-            nome: '',
-            quantidade: 0,
-            estoque: 0
-          },
-          quantidadeCompra: 1,
-          previsaoEntrega: '',
-          fornecedorSelecionado: '',
-          observacoesCompra: '',
-          opSelecionada: {
-            produto: '',
-            quantidade: 0,
-            previsaoConclusao: '',
-            observacoes: '',
-            status: 'Em andamento'
-          },
-          materiais: [
-            {
-              nome: 'INJ010010 - FRONTAL M7 T113 T116',
-              quantidade: 500,
-              estoque: 400
-            },
-            {
-              nome: 'FIX010033 - PAR PH AAT 2,9 X 6,5 PAN PRATA',
-              quantidade: 2000,
-              estoque: 1500
-            },
-            {
-              nome: 'FIX010013 - ARRUELA 5/32 POL LISA PRATA',
-              quantidade: 2000,
-              estoque: 3000
-            },
-            {
-              nome: 'ADS010007 - BORRACHA FE 20X10 ST',
-              quantidade: 2000,
-              estoque: 7000
-            },
-            {
-              nome: 'PRE030003 - GABARITO DE COLAGEM CENTRAL MIKE',
-              quantidade: 500,
-              estoque: 100
-            }
-          ],
-          kanban: {
-            'OP OK': [
-              {
-                titulo: 'OP4450 - PA',
-                codigo: '1500 - CST040003',
-                cliente: 'Solinftec',
-                percentual: '10%',
-                previsao: '10/04/2025'
-              },
-              {
-                titulo: 'OP4451 - PB',
-                codigo: '1501 - CST040004',
-                cliente: 'Solinftec',
-                percentual: '20%',
-                previsao: '12/04/2025'
-              }
-            ],
-            'OP Com pendência': [
-              {
-                titulo: 'OP4452 - PC',
-                codigo: '1502 - CST040005',
-                cliente: 'Solinftec',
-                percentual: '5%',
-                previsao: '15/04/2025'
-              },
-              {
-                titulo: 'OP4453 - PD',
-                codigo: '1503 - CST040006',
-                cliente: 'Solinftec',
-                percentual: '30%',
-                previsao: '18/04/2025'
-              }
-            ]
-          },
+    new Vue({
+      el: '#producao',
+      data: {
+        abaAtiva: 'gestao',
+        showModal: false,
+        showModalComprar: false,
+        showModalProducao: false,
+        showModalNovaOP: false,
+        showModalCompra: false,
+        showModalEditarOP: false,
+        opEditando: {
+          numero: '',
+          codigoProduto: '',
+          descricaoProduto: '',
+          estoque: 0,
+          itens: []
+        },
+        materialSelecionado: {
+          nome: '',
+          quantidade: 0,
+          estoque: 0
+        },
+        quantidadeCompra: 1,
+        previsaoEntrega: '',
+        fornecedorSelecionado: '',
+        observacoesCompra: '',
+        opSelecionada: {
+          produto: '',
+          quantidade: 0,
           previsaoConclusao: '',
-          quantidadeProducao: 0,
-          destinos: [],
-          itensProduto: [
+          observacoes: '',
+          status: 'Em andamento'
+        },
+        materiais: [
+          {
+            nome: 'INJ010010 - FRONTAL M7 T113 T116',
+            quantidade: 500,
+            estoque: 400
+          },
+          {
+            nome: 'FIX010033 - PAR PH AAT 2,9 X 6,5 PAN PRATA',
+            quantidade: 2000,
+            estoque: 1500
+          },
+          {
+            nome: 'FIX010013 - ARRUELA 5/32 POL LISA PRATA',
+            quantidade: 2000,
+            estoque: 3000
+          },
+          {
+            nome: 'ADS010007 - BORRACHA FE 20X10 ST',
+            quantidade: 2000,
+            estoque: 7000
+          },
+          {
+            nome: 'PRE030003 - GABARITO DE COLAGEM CENTRAL MIKE',
+            quantidade: 500,
+            estoque: 100
+          }
+        ],
+        kanban: {
+          'OP OK': [
             {
-              nome: 'PMP010006 - CHAPA POLIESTIRENO PRETO COM FILME 1000 X 2000 X 3MM',
-              quantidade: 0
+              titulo: 'OP4450 - PA',
+              codigo: '1500 - CST040003',
+              cliente: 'Solinftec',
+              percentual: '10%',
+              previsao: '10/04/2025'
+            },
+            {
+              titulo: 'OP4451 - PB',
+              codigo: '1501 - CST040004',
+              cliente: 'Solinftec',
+              percentual: '20%',
+              previsao: '12/04/2025'
             }
           ],
-          dataInicioProducao: '',
-          dataConclusaoProducao: '',
-          observacoesProducao: '',
-          novaOP: {
-            produto: 'BRC040006 - Braço Autotravante Curto B',
-            previsaoConclusao: '',
-            destinos: [
-              { nome: 'COFERMETA SA', quantidade: '150', anexo: '000545' },
-              { nome: 'USINA ALTO VERDE', quantidade: '500', anexo: '000545' },
-              { nome: 'ESTOQUE', quantidade: '1000', anexo: '000545' }
-            ],
-            quantidadeProducao: 1650,
-            itensProduto: [
-              { nome: 'Base 1,5 pol Solinfitec', quantidade: '150' },
-              { nome: 'Braço 95mm 1,5 pol Solinfitec', quantidade: '500' },
-              { nome: 'Base 1,5 pol Solinfitec', quantidade: '1000' }
-            ],
-            dataInicio: '',
-            dataConclusao: '',
-            observacoes: ''
-          },
+          'OP Com pendência': [
+            {
+              titulo: 'OP4452 - PC',
+              codigo: '1502 - CST040005',
+              cliente: 'Solinftec',
+              percentual: '5%',
+              previsao: '15/04/2025'
+            },
+            {
+              titulo: 'OP4453 - PD',
+              codigo: '1503 - CST040006',
+              cliente: 'Solinftec',
+              percentual: '30%',
+              previsao: '18/04/2025'
+            }
+          ]
+        },
+        previsaoConclusao: '',
+        quantidadeProducao: 0,
+        destinos: [],
+        itensProduto: [
+          {
+            nome: 'PMP010006 - CHAPA POLIESTIRENO PRETO COM FILME 1000 X 2000 X 3MM',
+            quantidade: 0
+          }
+        ],
+        dataInicioProducao: '',
+        dataConclusaoProducao: '',
+        observacoesProducao: '',
+        novaOP: {
+          produto: 'BRC040006 - Braço Autotravante Curto B',
+          previsaoConclusao: '',
+          destinos: [
+            { nome: 'COFERMETA SA', quantidade: '150', anexo: '000545' },
+            { nome: 'USINA ALTO VERDE', quantidade: '500', anexo: '000545' },
+            { nome: 'ESTOQUE', quantidade: '1000', anexo: '000545' }
+          ],
+          quantidadeProducao: 1650,
+          itensProduto: [
+            { nome: 'Base 1,5 pol Solinfitec', quantidade: '150' },
+            { nome: 'Braço 95mm 1,5 pol Solinfitec', quantidade: '500' },
+            { nome: 'Base 1,5 pol Solinfitec', quantidade: '1000' }
+          ],
+          dataInicio: '',
+          dataConclusao: '',
+          observacoes: ''
+        },
           produtosEstoque: [],
           ordensProducao: [
             {
@@ -1337,306 +1425,306 @@
             }
           ],
           ordensSelecionadas: []
-        },
-        methods: {
-          mudarAba(aba) {
+      },
+      methods: {
+        mudarAba(aba) {
             console.log('Mudando para aba:', aba);
-            this.abaAtiva = aba;
+          this.abaAtiva = aba;
             console.log('Aba atual:', this.abaAtiva);
-          },
-          abrirModalTratarOP(tarefa) {
-            this.opSelecionada = {
-              produto: tarefa.codigo,
-              quantidade: parseInt(tarefa.quantidade),
-              previsaoConclusao: tarefa.previsao,
-              observacoes: '',
-              status: 'Em andamento'
-            };
-            this.showModal = true;
-          },
-          fecharModal() {
-            this.showModal = false;
-            this.opSelecionada = {
-              produto: '',
-              quantidade: 0,
-              previsaoConclusao: '',
-              observacoes: '',
-              status: 'Em andamento'
-            };
-          },
-          salvarOP() {
-            // Validar dados antes de salvar
-            if (!this.validarOP()) {
-              return;
+        },
+        abrirModalTratarOP(tarefa) {
+          this.opSelecionada = {
+            produto: tarefa.codigo,
+            quantidade: parseInt(tarefa.quantidade),
+            previsaoConclusao: tarefa.previsao,
+            observacoes: '',
+            status: 'Em andamento'
+          };
+          this.showModal = true;
+        },
+        fecharModal() {
+          this.showModal = false;
+          this.opSelecionada = {
+            produto: '',
+            quantidade: 0,
+            previsaoConclusao: '',
+            observacoes: '',
+            status: 'Em andamento'
+          };
+        },
+        salvarOP() {
+          // Validar dados antes de salvar
+          if (!this.validarOP()) {
+            return;
+          }
+
+          // Atualizar a tarefa no kanban
+          const colunas = ['OP OK', 'OP Com pendência'];
+          for (const coluna of colunas) {
+            const index = this.kanban[coluna].findIndex(t => t.codigo === this.opSelecionada.produto);
+            if (index !== -1) {
+              this.kanban[coluna][index].quantidade = this.opSelecionada.quantidade;
+              this.kanban[coluna][index].previsao = this.opSelecionada.previsaoConclusao;
+              break;
             }
+          }
 
-            // Atualizar a tarefa no kanban
-            const colunas = ['OP OK', 'OP Com pendência'];
-            for (const coluna of colunas) {
-              const index = this.kanban[coluna].findIndex(t => t.codigo === this.opSelecionada.produto);
-              if (index !== -1) {
-                this.kanban[coluna][index].quantidade = this.opSelecionada.quantidade;
-                this.kanban[coluna][index].previsao = this.opSelecionada.previsaoConclusao;
-                break;
-              }
-            }
+          console.log('Dados da OP:', this.opSelecionada);
+          alert('Ordem de produção atualizada com sucesso!');
+          this.fecharModal();
+        },
+        validarOP() {
+          if (!this.opSelecionada.produto) {
+            alert('Selecione uma ordem de produção');
+            return false;
+          }
 
-            console.log('Dados da OP:', this.opSelecionada);
-            alert('Ordem de produção atualizada com sucesso!');
-            this.fecharModal();
-          },
-          validarOP() {
-            if (!this.opSelecionada.produto) {
-              alert('Selecione uma ordem de produção');
-              return false;
-            }
+          if (this.opSelecionada.quantidade <= 0) {
+            alert('A quantidade deve ser maior que zero');
+            return false;
+          }
 
-            if (this.opSelecionada.quantidade <= 0) {
-              alert('A quantidade deve ser maior que zero');
-              return false;
-            }
+          if (!this.opSelecionada.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
 
-            if (!this.opSelecionada.previsaoConclusao) {
-              alert('Informe a previsão de conclusão');
-              return false;
-            }
+          return true;
+        },
+        abrirModalComprar(material) {
+          this.materialSelecionado = { ...material };
+          this.quantidadeCompra = material.quantidade;
+          this.previsaoEntrega = new Date().toISOString().split('T')[0];
+          this.fornecedorSelecionado = '';
+          this.observacoesCompra = '';
+          this.showModalComprar = true;
+        },
+        fecharModalComprar() {
+          this.showModalComprar = false;
+          this.materialSelecionado = {
+            nome: '',
+            quantidade: 0,
+            estoque: 0
+          };
+          this.quantidadeCompra = 1;
+          this.previsaoEntrega = '';
+          this.fornecedorSelecionado = '';
+          this.observacoesCompra = '';
+        },
+        confirmarCompra() {
+          // Validar dados antes de confirmar
+          if (!this.validarCompra()) {
+            return;
+          }
 
-            return true;
-          },
-          abrirModalComprar(material) {
-            this.materialSelecionado = { ...material };
-            this.quantidadeCompra = material.quantidade;
-            this.previsaoEntrega = new Date().toISOString().split('T')[0];
-            this.fornecedorSelecionado = '';
-            this.observacoesCompra = '';
-            this.showModalComprar = true;
-          },
-          fecharModalComprar() {
-            this.showModalComprar = false;
-            this.materialSelecionado = {
-              nome: '',
-              quantidade: 0,
-              estoque: 0
-            };
-            this.quantidadeCompra = 1;
-            this.previsaoEntrega = '';
-            this.fornecedorSelecionado = '';
-            this.observacoesCompra = '';
-          },
-          confirmarCompra() {
-            // Validar dados antes de confirmar
-            if (!this.validarCompra()) {
-              return;
-            }
+          const pedidoCompra = {
+            material: this.materialSelecionado,
+            quantidade: this.quantidadeCompra,
+            previsaoEntrega: this.previsaoEntrega,
+            fornecedor: this.fornecedorSelecionado,
+            observacoes: this.observacoesCompra
+          };
 
-            const pedidoCompra = {
-              material: this.materialSelecionado,
-              quantidade: this.quantidadeCompra,
-              previsaoEntrega: this.previsaoEntrega,
-              fornecedor: this.fornecedorSelecionado,
-              observacoes: this.observacoesCompra
-            };
+          console.log('Dados do pedido de compra:', pedidoCompra);
+          alert('Pedido de compra registrado com sucesso!');
+          this.fecharModalComprar();
+        },
+        validarCompra() {
+          if (!this.materialSelecionado.nome) {
+            alert('Selecione um material');
+            return false;
+          }
 
-            console.log('Dados do pedido de compra:', pedidoCompra);
-            alert('Pedido de compra registrado com sucesso!');
-            this.fecharModalComprar();
-          },
-          validarCompra() {
-            if (!this.materialSelecionado.nome) {
-              alert('Selecione um material');
-              return false;
-            }
+          if (this.quantidadeCompra <= 0) {
+            alert('A quantidade deve ser maior que zero');
+            return false;
+          }
 
-            if (this.quantidadeCompra <= 0) {
-              alert('A quantidade deve ser maior que zero');
-              return false;
-            }
+          if (!this.previsaoEntrega) {
+            alert('Informe a previsão de entrega');
+            return false;
+          }
 
-            if (!this.previsaoEntrega) {
-              alert('Informe a previsão de entrega');
-              return false;
-            }
+          if (!this.fornecedorSelecionado) {
+            alert('Selecione um fornecedor');
+            return false;
+          }
 
-            if (!this.fornecedorSelecionado) {
-              alert('Selecione um fornecedor');
-              return false;
-            }
+          return true;
+        },
+        abrirModalProducao(material) {
+          this.materialSelecionado = { ...material };
+          this.quantidadeProducao = material.quantidade;
+          this.previsaoConclusao = new Date().toISOString().split('T')[0];
+          this.dataInicioProducao = new Date().toISOString().split('T')[0];
+          this.dataConclusaoProducao = new Date().toISOString().split('T')[0];
+          this.destinos = [
+            { nome: 'COFERMETA SA', quantidade: '', anexo: '000545' },
+            { nome: 'USINA ALTO VERDE', quantidade: '', anexo: '000545' },
+            { nome: 'ESTOQUE', quantidade: '', anexo: '000545' }
+          ];
+          this.observacoesProducao = '';
+          this.showModalProducao = true;
+        },
+        fecharModalProducao() {
+          this.showModalProducao = false;
+          this.materialSelecionado = {
+            nome: '',
+            quantidade: 0,
+            estoque: 0
+          };
+          this.quantidadeProducao = 0;
+          this.previsaoConclusao = '';
+          this.destinos = [];
+          this.dataInicioProducao = '';
+          this.dataConclusaoProducao = '';
+          this.observacoesProducao = '';
+        },
+        adicionarDestino() {
+          this.destinos.push({
+            nome: '',
+            quantidade: '',
+            anexo: '000545'
+          });
+        },
+        salvarProducao() {
+          // Validar dados antes de salvar
+          if (!this.validarProducao()) {
+            return;
+          }
 
-            return true;
-          },
-          abrirModalProducao(material) {
-            this.materialSelecionado = { ...material };
-            this.quantidadeProducao = material.quantidade;
-            this.previsaoConclusao = new Date().toISOString().split('T')[0];
-            this.dataInicioProducao = new Date().toISOString().split('T')[0];
-            this.dataConclusaoProducao = new Date().toISOString().split('T')[0];
-            this.destinos = [
-              { nome: 'COFERMETA SA', quantidade: '', anexo: '000545' },
-              { nome: 'USINA ALTO VERDE', quantidade: '', anexo: '000545' },
-              { nome: 'ESTOQUE', quantidade: '', anexo: '000545' }
-            ];
-            this.observacoesProducao = '';
-            this.showModalProducao = true;
-          },
-          fecharModalProducao() {
-            this.showModalProducao = false;
-            this.materialSelecionado = {
-              nome: '',
-              quantidade: 0,
-              estoque: 0
-            };
-            this.quantidadeProducao = 0;
-            this.previsaoConclusao = '';
-            this.destinos = [];
-            this.dataInicioProducao = '';
-            this.dataConclusaoProducao = '';
-            this.observacoesProducao = '';
-          },
-          adicionarDestino() {
-            this.destinos.push({
-              nome: '',
-              quantidade: '',
-              anexo: '000545'
-            });
-          },
-          salvarProducao() {
-            // Validar dados antes de salvar
-            if (!this.validarProducao()) {
-              return;
-            }
+          const ordemProducao = {
+            material: this.materialSelecionado,
+            quantidade: this.quantidadeProducao,
+            previsaoConclusao: this.previsaoConclusao,
+            destinos: this.destinos,
+            itensProduto: this.itensProduto,
+            dataInicio: this.dataInicioProducao,
+            dataConclusao: this.dataConclusaoProducao,
+            observacoes: this.observacoesProducao
+          };
 
-            const ordemProducao = {
-              material: this.materialSelecionado,
-              quantidade: this.quantidadeProducao,
-              previsaoConclusao: this.previsaoConclusao,
-              destinos: this.destinos,
-              itensProduto: this.itensProduto,
-              dataInicio: this.dataInicioProducao,
-              dataConclusao: this.dataConclusaoProducao,
-              observacoes: this.observacoesProducao
-            };
+          console.log('Dados da ordem de produção:', ordemProducao);
+          alert('Ordem de produção criada com sucesso!');
+          this.fecharModalProducao();
+        },
+        validarProducao() {
+          if (!this.materialSelecionado.nome) {
+            alert('Selecione um material');
+            return false;
+          }
 
-            console.log('Dados da ordem de produção:', ordemProducao);
-            alert('Ordem de produção criada com sucesso!');
-            this.fecharModalProducao();
-          },
-          validarProducao() {
-            if (!this.materialSelecionado.nome) {
-              alert('Selecione um material');
-              return false;
-            }
+          if (this.quantidadeProducao <= 0) {
+            alert('A quantidade deve ser maior que zero');
+            return false;
+          }
 
-            if (this.quantidadeProducao <= 0) {
-              alert('A quantidade deve ser maior que zero');
-              return false;
-            }
+          if (!this.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
 
-            if (!this.previsaoConclusao) {
-              alert('Informe a previsão de conclusão');
-              return false;
-            }
+          if (this.destinos.length === 0) {
+            alert('Adicione pelo menos um destino');
+            return false;
+          }
 
-            if (this.destinos.length === 0) {
-              alert('Adicione pelo menos um destino');
-              return false;
-            }
+          return true;
+        },
+        onEnd(evt) {
+          console.log('Card movido:', evt);
+        },
+        abrirModalNovaOP() {
+          this.showModalNovaOP = true;
+        },
+        fecharModalNovaOP() {
+          this.showModalNovaOP = false;
+          this.novaOP = {
+            produto: 'BRC040006 - Braço Autotravante Curto B',
+            previsaoConclusao: '',
+            destinos: [
+              { nome: 'COFERMETA SA', quantidade: '150', anexo: '000545' },
+              { nome: 'USINA ALTO VERDE', quantidade: '500', anexo: '000545' },
+              { nome: 'ESTOQUE', quantidade: '1000', anexo: '000545' }
+            ],
+            quantidadeProducao: 1650,
+            itensProduto: [
+              { nome: 'Base 1,5 pol Solinfitec', quantidade: '150' },
+              { nome: 'Braço 95mm 1,5 pol Solinfitec', quantidade: '500' },
+              { nome: 'Base 1,5 pol Solinfitec', quantidade: '1000' }
+            ],
+            dataInicio: '',
+            dataConclusao: '',
+            observacoes: ''
+          };
+        },
+        salvarNovaOP() {
+          // Validar dados antes de salvar
+          if (!this.validarNovaOP()) {
+            return;
+          }
 
-            return true;
-          },
-          onEnd(evt) {
-            console.log('Card movido:', evt);
-          },
-          abrirModalNovaOP() {
-            this.showModalNovaOP = true;
-          },
-          fecharModalNovaOP() {
-            this.showModalNovaOP = false;
-            this.novaOP = {
-              produto: 'BRC040006 - Braço Autotravante Curto B',
-              previsaoConclusao: '',
-              destinos: [
-                { nome: 'COFERMETA SA', quantidade: '150', anexo: '000545' },
-                { nome: 'USINA ALTO VERDE', quantidade: '500', anexo: '000545' },
-                { nome: 'ESTOQUE', quantidade: '1000', anexo: '000545' }
-              ],
-              quantidadeProducao: 1650,
-              itensProduto: [
-                { nome: 'Base 1,5 pol Solinfitec', quantidade: '150' },
-                { nome: 'Braço 95mm 1,5 pol Solinfitec', quantidade: '500' },
-                { nome: 'Base 1,5 pol Solinfitec', quantidade: '1000' }
-              ],
-              dataInicio: '',
-              dataConclusao: '',
-              observacoes: ''
-            };
-          },
-          salvarNovaOP() {
-            // Validar dados antes de salvar
-            if (!this.validarNovaOP()) {
-              return;
-            }
+          console.log('Dados da nova OP:', this.novaOP);
+          alert('Nova ordem de produção criada com sucesso!');
+          this.fecharModalNovaOP();
+        },
+        validarNovaOP() {
+          if (!this.novaOP.produto) {
+            alert('Informe o produto');
+            return false;
+          }
 
-            console.log('Dados da nova OP:', this.novaOP);
-            alert('Nova ordem de produção criada com sucesso!');
-            this.fecharModalNovaOP();
-          },
-          validarNovaOP() {
-            if (!this.novaOP.produto) {
-              alert('Informe o produto');
-              return false;
-            }
+          if (this.novaOP.quantidadeProducao <= 0) {
+            alert('A quantidade a produzir deve ser maior que zero');
+            return false;
+          }
 
-            if (this.novaOP.quantidadeProducao <= 0) {
-              alert('A quantidade a produzir deve ser maior que zero');
-              return false;
-            }
+          if (!this.novaOP.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
 
-            if (!this.novaOP.previsaoConclusao) {
-              alert('Informe a previsão de conclusão');
-              return false;
-            }
+          return true;
+        },
+        adicionarProdutoEstoque() {
+          const novoProduto = {
+            codigo: '',
+            descricao: '',
+            cliente: '',
+            prevEntrega: '',
+            quantico: '',
+            reservarExpedicao: '',
+            quantProduzir: '',
+            acao: false
+          };
+          this.produtosEstoque.unshift(novoProduto);
+        },
+        salvarProdutoEstoque() {
+          if (!this.validarProdutoEstoque()) {
+            return;
+          }
 
-            return true;
-          },
-          adicionarProdutoEstoque() {
-            const novoProduto = {
-              codigo: '',
-              descricao: '',
-              cliente: '',
-              prevEntrega: '',
-              quantico: '',
-              reservarExpedicao: '',
-              quantProduzir: '',
-              acao: false
-            };
-            this.produtosEstoque.unshift(novoProduto);
-          },
-          salvarProdutoEstoque() {
-            if (!this.validarProdutoEstoque()) {
-              return;
-            }
+          console.log('Dados do novo produto:', this.novoProdutoEstoque);
+          alert('Produto adicionado ao estoque com sucesso!');
+          this.fecharModalAdicionarEstoque();
+        },
+        validarProdutoEstoque() {
+          if (!this.novoProdutoEstoque.produto) {
+            alert('Informe o produto');
+            return false;
+          }
 
-            console.log('Dados do novo produto:', this.novoProdutoEstoque);
-            alert('Produto adicionado ao estoque com sucesso!');
-            this.fecharModalAdicionarEstoque();
-          },
-          validarProdutoEstoque() {
-            if (!this.novoProdutoEstoque.produto) {
-              alert('Informe o produto');
-              return false;
-            }
+          if (this.novoProdutoEstoque.quantidadeProducao <= 0) {
+            alert('A quantidade a produzir deve ser maior que zero');
+            return false;
+          }
 
-            if (this.novoProdutoEstoque.quantidadeProducao <= 0) {
-              alert('A quantidade a produzir deve ser maior que zero');
-              return false;
-            }
+          if (!this.novoProdutoEstoque.previsaoConclusao) {
+            alert('Informe a previsão de conclusão');
+            return false;
+          }
 
-            if (!this.novoProdutoEstoque.previsaoConclusao) {
-              alert('Informe a previsão de conclusão');
-              return false;
-            }
-
-            return true;
+          return true;
           },
           moverParaTabela2(item) {
             if (item.selecionado) {
@@ -1679,6 +1767,55 @@
           },
           fecharModalProducao() {
             this.showModalProducao = false;
+          },
+          abrirModalEditarOP() {
+            console.log('Abrindo modal de edição');
+            this.opEditando = {
+              numero: 'OP4450',
+              codigoProduto: 'CST040003',
+              descricaoProduto: 'Caso X115 Magnética',
+              estoque: 1000,
+              itens: [{
+                propostaComercial: '000451',
+                cliente: 'Solinfitec',
+                prevEntrega: '09/04/2025',
+                quantidade: 2500,
+                quantidadeTotal: 2570
+              }]
+            };
+            this.showModalEditarOP = true;
+            console.log('Estado da modal:', this.showModalEditarOP);
+          },
+          excluirOP() {
+            console.log('Excluindo OP');
+            // Implementar lógica de exclusão
+          },
+          fecharModalEditarOP() {
+            this.showModalEditarOP = false;
+            this.opEditando = {
+              numero: '',
+              codigoProduto: '',
+              descricaoProduto: '',
+              estoque: 0,
+              itens: []
+            };
+          },
+          adicionarItem() {
+            this.opEditando.itens.push({
+              propostaComercial: '',
+              cliente: '',
+              prevEntrega: '',
+              quantidade: 0,
+              quantidadeTotal: 0
+            });
+          },
+          removerItem(index) {
+            this.opEditando.itens.splice(index, 1);
+          },
+          salvarEdicaoOP() {
+            // Implementar lógica de salvamento
+            console.log('Salvando OP:', this.opEditando);
+            this.fecharModalEditarOP();
           }
         }
       });
